@@ -27,6 +27,11 @@ public class VentanaPrincipalMedico extends JFrame {
 	JCheckBox chckbxInfoPersonal;
 	JButton btnVerPacientesCargo;
 	VerPacientesCargo pacientesCargo;
+	private JButton btnVerCitasCon;
+	VerCitasConPaciente citas;
+	private JButton btnAadirMedicamentosAl;
+	AnadirMedicamentoTarjeta anadir;
+	private JButton btnEliminarMedicamentosAl;
 	/**
 	 * Launch the application.
 	 */
@@ -88,8 +93,37 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		btnVerPacientesCargo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnVerPacientesCargo.setBounds(65, 99, 155, 31);
+		btnVerPacientesCargo.setBounds(54, 99, 188, 31);
 		contentPane.add(btnVerPacientesCargo);
+		
+		btnVerCitasCon = new JButton("Ver citas con los pacientes");
+		btnVerCitasCon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				citas = new VerCitasConPaciente(dni);
+				citas.setVisible(true);
+				dispose();
+			}
+		});
+		btnVerCitasCon.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnVerCitasCon.setBounds(54, 164, 188, 31);
+		contentPane.add(btnVerCitasCon);
+		
+		btnAadirMedicamentosAl = new JButton("Añadir medicamentos al paciente");
+		btnAadirMedicamentosAl.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				anadir = new AnadirMedicamentoTarjeta(dni);
+				anadir.setVisible(true);
+				dispose();
+			}
+		});
+		btnAadirMedicamentosAl.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAadirMedicamentosAl.setBounds(54, 224, 217, 31);
+		contentPane.add(btnAadirMedicamentosAl);
+		
+		btnEliminarMedicamentosAl = new JButton("Eliminar medicamentos al paciente");
+		btnEliminarMedicamentosAl.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnEliminarMedicamentosAl.setBounds(312, 99, 222, 31);
+		contentPane.add(btnEliminarMedicamentosAl);
 		
 	
 	}

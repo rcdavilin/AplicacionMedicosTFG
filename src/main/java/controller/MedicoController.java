@@ -1,15 +1,18 @@
 package controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.bson.Document;
 
 import repository.medico.MedicoRepositoryImpl;
+import repository.paciente.PacienteRepositoryImpl;
 
 public class MedicoController {
 
 	private final MedicoRepositoryImpl medicoRepositoryImpl = new MedicoRepositoryImpl();
+	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
 
 	public Optional<Document> findByDni(String dni) {
 		Optional<Document> medico = medicoRepositoryImpl.findById(dni);
@@ -17,15 +20,21 @@ public class MedicoController {
 		return medico;
 
 	}
-	
-	public String getPacientesCargo() {
-		Optional<Document> medico = medicoRepositoryImpl.findPacientesCargo();
-		if (medico.isEmpty()) {
-			return "No se encontraron pacientes.";
-		} else {
-			return medicoRepositoryImpl.mostrar(medico);
-		}
 
+	public Optional<Document> findByDniPaciente(String dni) {
+		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
+
+		return paciente;
+	}
+
+	public Optional<Document> findbyCitasPaciente(String dni) {
+		Optional<Document> medico = medicoRepositoryImpl.findCitasPacientes(dni);
+		return medico;
+	}
+
+	public String[] dniPacientes(String dni) {
+		String[] dniPacientes = medicoRepositoryImpl.guardarDniPacientes(dni);
+		return dniPacientes;
 	}
 
 	public Optional<Document> comprobarDni(String dni) {
@@ -40,6 +49,19 @@ public class MedicoController {
 
 	}
 
+	public Boolean anadirTarjeta(Optional<Document> medicos, String[] valor) {
+		List<String> list = Arrays.asList(valor); // Convertir array en lista
+
+		Boolean actualizado = pacienteRepositoryImpl.updateMedicamentosTarjeta(medicos, "Tarjeta_Medica", list);
+
+		return actualizado;
+	}
+
+	public Boolean eliminarMedicamentoTarjeta(Optional<Document> medicos, String valor) {
+		Boolean actualizado = pacienteRepositoryImpl.eliminarValorDeArray(medicos, "Tarjeta_Medica", valor);
+		return actualizado;
+	}
+
 	public Boolean anadirContraseña(String dni, String atributo, String valor) {
 		Optional<Document> medicos;
 
@@ -52,11 +74,12 @@ public class MedicoController {
 	public Boolean actualizarContraseña(Optional<Document> medicos, String atributo, String contraseña) {
 		return medicoRepositoryImpl.update(medicos, atributo, contraseña);
 	}
-	
+
 	public String mostrar(List<Document> medicos) {
 		String ensenar = medicoRepositoryImpl.mostrarMedicos(medicos);
 		return ensenar;
 	}
+
 	public String mostrar(Optional<Document> medicos) {
 		String ensenar = medicoRepositoryImpl.mostrar(medicos);
 		return ensenar;
@@ -65,6 +88,5 @@ public class MedicoController {
 	public String mostrar(String mensaje) {
 		return mensaje;
 	}
-	
 
 }

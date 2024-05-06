@@ -42,33 +42,28 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 				Document document = cursor.next();
 				documentList.add(document);
 			}
-		} finally {
+		} finally { 
 			cursor.close();
 		}
 
 		return documentList;
 	}
-	
-	public Optional<Document> findPacientesCargo() {
-		Bson projectionFields = Projections.fields(Projections.include("Pacientes_Cargo"),
-				Projections.excludeId());
 
-		MongoCursor<Document> cursor = collection.find().projection(projectionFields).iterator();
 
-		List<Document> documentList = new ArrayList<>();
-		Document document = null;
-		try {
-			while (cursor.hasNext()) {
-				document = cursor.next();
-				documentList.add(document);
-			}
-		} finally {
-			cursor.close();
-		}
-
-		return Optional.ofNullable(document);
+	public Optional<Document> findCitasPacientes(String medico) {
+		Bson projectionFields = Projections.fields(Projections.include("Citas_Paciente"), Projections.excludeId());
+		Bson filter = eq(dni, medico);
+		Document result = collection.find(filter).projection(projectionFields).first();
+		return Optional.ofNullable(result);
 	}
 
+	@SuppressWarnings("unchecked")
+	public String[] guardarDniPacientes(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+		List<String> dniList = (List<String>) document.get("Pacientes_Cargo");
+		return dniList.toArray(new String[0]);
+	}
 
 	public String pretty(String json) {
 		JsonElement je = JsonParser.parseString(json);
