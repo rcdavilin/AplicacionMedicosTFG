@@ -27,8 +27,7 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 	MongoClient mongoClient = MongoDB.getClient();
 	MongoDatabase database = mongoClient.getDatabase("TrabajoMongo");
 	MongoCollection<Document> collection = database.getCollection("Medicos");
-	String dni = "Dni", nombre = "Nombre", apellidos = "Apellido", especialidad = "Especialidad",
-			año_experiencia = "Año_Experiencia";
+	String dni = "Dni", nombre = "Nombre", apellidos = "Apellido", especialidad = "Especialidad";
 
 	@Override
 	public List<Document> findAll() {
@@ -196,22 +195,22 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 		}
 	}
 
-	public Boolean updatePacientesCargo(Optional<Document> medico, Document historial) {
-		try {
-
-			if (medico.isPresent()) {
-				Document filter = medico.get(); // filtro para seleccionar el documento a actualizar
-				Document update = new Document("$set", new Document(historial));
-				collection.updateOne(filter, update);
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+//	public Boolean updatePacientesCargo(Optional<Document> medico, Document historial) {
+//		try {
+//
+//			if (medico.isPresent()) {
+//				Document filter = medico.get(); // filtro para seleccionar el documento a actualizar
+//				Document update = new Document("$set", new Document(historial));
+//				collection.updateOne(filter, update);
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//	}
 
 	public List<Document> findByAttribute(String atributo, String valor) {
 		Bson filter = eq(atributo, valor);
