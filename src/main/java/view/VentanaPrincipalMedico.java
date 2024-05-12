@@ -9,11 +9,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.MedicoController;
-import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 
 public class VentanaPrincipalMedico extends JFrame {
 
@@ -25,13 +28,22 @@ public class VentanaPrincipalMedico extends JFrame {
 	MedicoController controllerMedico = new MedicoController();
 	static String dni;
 	JCheckBox chckbxInfoPersonal;
-	JButton btnVerPacientesCargo;
 	VerPacientesCargo pacientesCargo;
-	private JButton btnVerCitasCon;
-	VerCitasConPaciente citas;
-	private JButton btnAadirMedicamentosAl;
 	AnadirMedicamentoTarjeta anadir;
-	private JButton btnEliminarMedicamentosAl;
+	JMenuBar menuBar;
+	JMenu mnVerPacientesCargo;
+	JMenuItem mntmVerPacientesCargo;
+	JMenu mnGestionCitas;
+	JMenuItem mntmAsignarCitasPacientes;
+	JMenuItem mntmAbrirCitasMedicas;
+	JMenuItem mntmVerCitasPacientes;
+	JMenu mnGestionMedicamentos;
+	JMenuItem mntmAñadirMedicamentosPaciente;
+	JMenuItem mntmEliminarMedicamentosPaciente;
+	AsignarCitaPaciente asignar;
+	EliminarMedicamentoTarjeta eliminar;
+	VerCitasConLosPacientes verCitas;
+	AbrirCitas abrir;
 	/**
 	 * Launch the application.
 	 */
@@ -83,47 +95,92 @@ public class VentanaPrincipalMedico extends JFrame {
 		});
 		contentPane.add(chckbxInfoPersonal);
 		
-		btnVerPacientesCargo = new JButton("Ver pacientes a cargo");
-		btnVerPacientesCargo.addActionListener(new ActionListener() {
+		menuBar = new JMenuBar();
+		menuBar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		menuBar.setBackground(new Color(230, 230, 250));
+		menuBar.setBounds(10, 92, 514, 22);
+		contentPane.add(menuBar);
+		
+		mnVerPacientesCargo = new JMenu("Ver pacientes a cargo");
+		mnVerPacientesCargo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mnVerPacientesCargo.setBackground(new Color(230, 230, 250));
+		menuBar.add(mnVerPacientesCargo);
+		
+		mntmVerPacientesCargo = new JMenuItem("Ver pacientes a cargo");
+		mntmVerPacientesCargo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmVerPacientesCargo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pacientesCargo = new VerPacientesCargo(dni);
 				pacientesCargo.setVisible(true);
 				dispose();
-				
 			}
 		});
-		btnVerPacientesCargo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnVerPacientesCargo.setBounds(54, 99, 188, 31);
-		contentPane.add(btnVerPacientesCargo);
+		mnVerPacientesCargo.add(mntmVerPacientesCargo);
 		
-		btnVerCitasCon = new JButton("Ver citas con los pacientes");
-		btnVerCitasCon.addActionListener(new ActionListener() {
+		mnGestionCitas = new JMenu("Gestion citas");
+		mnGestionCitas.setBackground(new Color(230, 230, 250));
+		mnGestionCitas.setBorder(new LineBorder(new Color(0, 0, 0)));
+		menuBar.add(mnGestionCitas);
+		
+		mntmAsignarCitasPacientes = new JMenuItem("Asignar citas a pacientes");
+		mntmAsignarCitasPacientes.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmAsignarCitasPacientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				citas = new VerCitasConPaciente(dni);
-				citas.setVisible(true);
+				asignar = new AsignarCitaPaciente(dni);
+				asignar.setVisible(true);
 				dispose();
 			}
 		});
-		btnVerCitasCon.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnVerCitasCon.setBounds(54, 164, 188, 31);
-		contentPane.add(btnVerCitasCon);
+		mnGestionCitas.add(mntmAsignarCitasPacientes);
 		
-		btnAadirMedicamentosAl = new JButton("Añadir medicamentos al paciente");
-		btnAadirMedicamentosAl.addActionListener(new ActionListener() {
+		mntmAbrirCitasMedicas = new JMenuItem("Abrir citas medicas");
+		mntmAbrirCitasMedicas.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmAbrirCitasMedicas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				abrir = new AbrirCitas(dni);
+				abrir.setVisible(true);
+				dispose();
+			}
+		});
+		mnGestionCitas.add(mntmAbrirCitasMedicas);
+		
+		mntmVerCitasPacientes = new JMenuItem("Ver citas con los pacientes");
+		mntmVerCitasPacientes.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmVerCitasPacientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verCitas = new VerCitasConLosPacientes(dni);
+				verCitas.setVisible(true);
+				dispose();
+			}
+		});
+		mnGestionCitas.add(mntmVerCitasPacientes);
+		
+		mnGestionMedicamentos = new JMenu("Gestion medicamentos");
+		mnGestionMedicamentos.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mnGestionMedicamentos.setBackground(new Color(230, 230, 250));
+		menuBar.add(mnGestionMedicamentos);
+		
+		mntmAñadirMedicamentosPaciente = new JMenuItem("Añadir medicamentos a paciente");
+		mntmAñadirMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmAñadirMedicamentosPaciente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				anadir = new AnadirMedicamentoTarjeta(dni);
 				anadir.setVisible(true);
 				dispose();
 			}
 		});
-		btnAadirMedicamentosAl.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAadirMedicamentosAl.setBounds(54, 224, 217, 31);
-		contentPane.add(btnAadirMedicamentosAl);
+		mnGestionMedicamentos.add(mntmAñadirMedicamentosPaciente);
 		
-		btnEliminarMedicamentosAl = new JButton("Eliminar medicamentos al paciente");
-		btnEliminarMedicamentosAl.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnEliminarMedicamentosAl.setBounds(312, 99, 222, 31);
-		contentPane.add(btnEliminarMedicamentosAl);
+		mntmEliminarMedicamentosPaciente = new JMenuItem("Eliminar medicamentos del paciente");
+		mntmEliminarMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmEliminarMedicamentosPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eliminar = new EliminarMedicamentoTarjeta(dni);
+				eliminar.setVisible(true);
+				dispose();
+			}
+		});
+		mnGestionMedicamentos.add(mntmEliminarMedicamentosPaciente);
 		
 	
 	}

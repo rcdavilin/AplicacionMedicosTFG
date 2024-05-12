@@ -15,5 +15,5 @@ public interface CrudRepository<T, id> {
 	Optional<Document> findById(String id);
 
 	DeleteResult delete(String dni);
-	
+
 }

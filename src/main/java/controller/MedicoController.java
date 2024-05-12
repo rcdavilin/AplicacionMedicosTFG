@@ -21,19 +21,105 @@ public class MedicoController {
 
 	}
 
+	public String findDniMedicoPorDni(String nombre) {
+		String medico = medicoRepositoryImpl.findDniPorDni(nombre);
+		return medico;
+	}
+
+	public String findNombreMedicoPorDni(String nombre) {
+		String medico = medicoRepositoryImpl.findNombrePordni(nombre);
+		return medico;
+	}
+
+	public String findApellidosMedicoPorDni(String nombre) {
+		String medico = medicoRepositoryImpl.findApellidosPordni(nombre);
+		return medico;
+	}
+
+	public String findEspecialidadPorDni(String nombre) {
+		String medico = medicoRepositoryImpl.findEspecialidadPordni(nombre);
+		return medico;
+	}
+
+	public String findFechaIncoporacionPorDni(String nombre) {
+		String medico = medicoRepositoryImpl.findFechaIncorporacionPordni(nombre);
+		return medico;
+	}
+
+	public String findDniPacientePorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findDniPorDni(nombre);
+		return medico;
+	}
+
+	public String findNombrePacientePorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findNombrePordni(nombre);
+		return medico;
+	}
+
+	public String findApellidosPacientePorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findApellidosPordni(nombre);
+		return medico;
+	}
+
+	public String findFechaNacimientoPorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findFechaNacimientoPordni(nombre);
+		return medico;
+	}
+
+	public String findSexoPorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findSexoPordni(nombre);
+		return medico;
+	}
+
+	public String findLugarNacimientoPorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findLugarNacimientoPordni(nombre);
+		return medico;
+	}
+
+	public Integer findAlturaPorDni(String nombre) {
+		Integer medico = pacienteRepositoryImpl.findAlturaPordni(nombre);
+		return medico;
+	}
+
+	public Integer findPesoPorDni(String nombre) {
+		Integer medico = pacienteRepositoryImpl.findPesoPordni(nombre);
+		return medico;
+	}
+
+	public String findGrupoSanguineoPorDni(String nombre) {
+		String medico = pacienteRepositoryImpl.findGrupoSanguineoPordni(nombre);
+		return medico;
+	}
+
+	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
+		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
+
+		return actualizado;
+	}
+
+	public Boolean abrirCitasPaciente(Optional<Document> dni, List<String> citas) {
+		Boolean actualizado = medicoRepositoryImpl.abrirCitasMedicas(dni, "Citas_Abiertas", citas);
+
+		return actualizado;
+	}
 	public Optional<Document> findByDniPaciente(String dni) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 
 		return paciente;
 	}
 
-	public Optional<Document> findbyCitasPaciente(String dni) {
-		Optional<Document> medico = medicoRepositoryImpl.findCitasPacientes(dni);
+	public String[] findbyCitasPaciente(String dni) {
+		String[] medico = pacienteRepositoryImpl.findCitasPacientes(dni);
 		return medico;
 	}
 
 	public String[] dniPacientes(String dni) {
 		String[] dniPacientes = medicoRepositoryImpl.guardarDniPacientes(dni);
+		return dniPacientes;
+	}
+
+	public String[] medicamentos(String dni) {
+		String[] dniPacientes = pacienteRepositoryImpl.guardarMedicamentos(dni);
 		return dniPacientes;
 	}
 
