@@ -140,8 +140,7 @@ public class InicioSesion extends JFrame {
 		loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Aquí iría el código para verificar las credenciales y realizar el inicio de
-				// sesión
+				
 				username = formattedDni.getText();
 				String password = new String(passwordField.getPassword());
 

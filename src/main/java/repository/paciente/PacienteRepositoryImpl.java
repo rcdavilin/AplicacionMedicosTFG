@@ -1,14 +1,11 @@
 package repository.paciente;
 
 import static com.mongodb.client.model.Filters.eq;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.bson.Document;
 import org.bson.conversions.Bson;
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -16,7 +13,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
-
 import db.MongoDB;
 
 public class PacienteRepositoryImpl implements PacienteRepository {
@@ -48,6 +44,128 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return documentList;
 	}
 
+	@SuppressWarnings("unchecked")
+	public String[] findAlergenos(String medico) {
+		Bson filter = eq(dni, medico);
+		Document result = collection.find(filter).first();
+		List<String> alergenos = (List<String>) result.get("Alergenos");
+		return alergenos.toArray(new String[0]);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findEnfermedad(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedadesLista = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<String> enfermedades = new ArrayList<>();
+
+		for (Document obj : enfermedadesLista) {
+			if (obj.containsKey("Enfermedad")) {
+				enfermedades.add(obj.getString("Enfermedad"));
+			}
+		}
+
+		return enfermedades;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findFecha(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<String> fecha = new ArrayList<>();
+
+		for (Document obj : enfermedades) {
+			if (obj.containsKey("Fecha")) {
+				fecha.add(obj.getString("Fecha"));
+			}
+		}
+
+		return fecha;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findTratamiento(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<String> tratamiento = new ArrayList<>();
+
+		for (Document obj1 : enfermedades) {
+			if (obj1.containsKey("Detalles")) {
+				Document obj2 = (Document) obj1.get("Detalles");
+				if (obj2.containsKey("Tratamiento")) {
+					tratamiento.add(obj2.getString("Tratamiento"));
+				}
+			}
+		}
+
+		return tratamiento;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findInforme(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<String> informe = new ArrayList<>();
+
+		for (Document obj1 : enfermedades) {
+			if (obj1.containsKey("Detalles")) {
+				Document obj2 = (Document) obj1.get("Detalles");
+				if (obj2.containsKey("Informe")) {
+					informe.add(obj2.getString("Informe"));
+				}
+			}
+		}
+
+		return informe;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<ArrayList<String>> findMedicamentosTratamiento(String medico) {
+	    Bson filter = eq(dni, medico);
+	    Document document = collection.find(filter).first();
+
+	    if (document == null) {
+	        return new ArrayList<>();
+	    }
+
+	    ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+	    ArrayList<ArrayList<String>> medicamentos = new ArrayList<>();
+
+	    for (Document obj1 : enfermedades) {
+	        if (obj1.containsKey("Detalles")) {
+	            Document obj2 = (Document) obj1.get("Detalles");
+	            if (obj2.containsKey("Medicamentos")) {
+	                ArrayList<String> medicamento = (ArrayList<String>) obj2.get("Medicamentos");
+	                medicamentos.add(new ArrayList<>(medicamento)); 
+	            } else {
+	                medicamentos.add(new ArrayList<>()); 
+	            }
+	        } else {
+	            medicamentos.add(new ArrayList<>());
+	        }
+	    }
+
+	    return medicamentos;
+	}
+
+
+
+	@SuppressWarnings("unchecked")
+	public String[] findMedicamentos(String medico) {
+		Bson filter = eq(dni, medico);
+		Document result = collection.find(filter).first();
+		List<String> medicamentos = (List<String>) result.get("Medicamentos");
+		return medicamentos.toArray(new String[0]);
+	}
+
 	public String findDniPorDni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
@@ -59,64 +177,64 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	public String findNombrePordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(nombre);
-		return (String) dniList;
+		Object nombreDni = result.get(nombre);
+		return (String) nombreDni;
 
 	}
 
 	public String findApellidosPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(apellidos);
-		return (String) dniList;
+		Object apellidosDni = result.get(apellidos);
+		return (String) apellidosDni;
 
 	}
 
 	public String findFechaNacimientoPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(fechaNacimiento);
-		return (String) dniList;
+		Object fechaNacimientoList = result.get(fechaNacimiento);
+		return (String) fechaNacimientoList;
 
 	}
 
 	public String findSexoPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(sexo);
-		return (String) dniList;
+		Object sexoDni = result.get(sexo);
+		return (String) sexoDni;
 
 	}
 
 	public String findLugarNacimientoPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(lugarNacimiento);
-		return (String) dniList;
+		Object lugarNacimientoDni = result.get(lugarNacimiento);
+		return (String) lugarNacimientoDni;
 
 	}
 
 	public Integer findAlturaPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(altura);
-		return (Integer) dniList;
+		Object alturaDni = result.get(altura);
+		return (Integer) alturaDni;
 
 	}
 
 	public Integer findPesoPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(peso);
-		return (Integer) dniList;
+		Object pesoDni = result.get(peso);
+		return (Integer) pesoDni;
 
 	}
 
 	public String findGrupoSanguineoPordni(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
-		Object dniList = result.get(grupo_Sanguineo);
-		return (String) dniList;
+		Object grupoSanguineoDni = result.get(grupo_Sanguineo);
+		return (String) grupoSanguineoDni;
 
 	}
 
@@ -164,8 +282,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	public String[] findCitasPacientes(String medico) {
 		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
-		List<String> dniList = (List<String>) result.get("Citas_Paciente");
-		return dniList.toArray(new String[0]);
+		List<String> citas = (List<String>) result.get("Citas_Paciente");
+		return citas.toArray(new String[0]);
 
 	}
 
@@ -173,15 +291,22 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	public String[] guardarMedicamentos(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
-		List<String> dniList = (List<String>) document.get("Tarjeta_Medica");
-		return dniList.toArray(new String[0]);
+		List<String> medicamentos = (List<String>) document.get("Tarjeta_Medica");
+		return medicamentos.toArray(new String[0]);
+	}
+
+	public String guardarMedicamentosString(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document document = collection.find(filter).first();
+		Object medicamentosTarjeta = document.get("Tarjeta_Medica");
+		return (String) medicamentosTarjeta;
 	}
 
 	public Boolean updateCitasMedicos(Optional<Document> paciente, String atributo, List<String> citas) {
 		try {
 			if (paciente.isPresent()) {
 				Document filter = paciente.get();
-				collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.pushEach(atributo, citas));
+				collection.updateOne(eq(dni, filter.getString("Dni")), Updates.pushEach(atributo, citas));
 				return true;
 			} else {
 				return false;
@@ -196,7 +321,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		try {
 			if (paciente.isPresent()) {
 				Document filter = paciente.get();
-				collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.pushEach(atributo, valor));
+				collection.updateOne(eq(dni, filter.getString("Dni")), Updates.pushEach(atributo, valor));
 				return true;
 			} else {
 				return false;
@@ -210,8 +335,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	public Boolean eliminarValorDeArray(Optional<Document> paciente, String atributo, String valor) {
 		try {
 			if (paciente.isPresent()) {
-				Document filter = paciente.get(); // filtro para seleccionar el documento a actualizar
-				// Eliminamos el valor especificado del array existente
+				Document filter = paciente.get();
 				collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.pull(atributo, valor));
 				return true;
 			} else {
@@ -270,13 +394,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			e.printStackTrace();
 			return false;
 		}
-	}
-
-	public List<Document> findByAttribute(String atributo, String valor) {
-		Bson filter = eq(atributo, valor);
-		Bson projectionFields = Projections.excludeId();
-		List<Document> results = collection.find(filter).projection(projectionFields).into(new ArrayList<>());
-		return results;
 	}
 
 }

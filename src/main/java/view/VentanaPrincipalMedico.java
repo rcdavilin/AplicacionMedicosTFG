@@ -40,10 +40,14 @@ public class VentanaPrincipalMedico extends JFrame {
 	JMenu mnGestionMedicamentos;
 	JMenuItem mntmAñadirMedicamentosPaciente;
 	JMenuItem mntmEliminarMedicamentosPaciente;
+	JMenuItem mntmVerHistorialMedico ;
 	AsignarCitaPaciente asignar;
 	EliminarMedicamentoTarjeta eliminar;
 	VerCitasConLosPacientes verCitas;
 	AbrirCitas abrir;
+	private JMenuItem mntmVerMedicamentosPaciente;
+	VerMedicamentosPaciente verMedicamentos;
+	VerHistorialMedico historial;
 	/**
 	 * Launch the application.
 	 */
@@ -117,6 +121,16 @@ public class VentanaPrincipalMedico extends JFrame {
 		});
 		mnVerPacientesCargo.add(mntmVerPacientesCargo);
 		
+		mntmVerHistorialMedico = new JMenuItem("Ver historial medico");
+		mntmVerHistorialMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				historial = new VerHistorialMedico(dni);
+				historial.setVisible(true);
+				dispose();
+			}
+		});
+		mnVerPacientesCargo.add(mntmVerHistorialMedico);
+		
 		mnGestionCitas = new JMenu("Gestion citas");
 		mnGestionCitas.setBackground(new Color(230, 230, 250));
 		mnGestionCitas.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -181,6 +195,17 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionMedicamentos.add(mntmEliminarMedicamentosPaciente);
+		
+		mntmVerMedicamentosPaciente = new JMenuItem("Ver medicamentos del paciente");
+		mntmVerMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmVerMedicamentosPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verMedicamentos = new VerMedicamentosPaciente(dni);
+				verMedicamentos.setVisible(true);
+				dispose();
+			}
+		});
+		mnGestionMedicamentos.add(mntmVerMedicamentosPaciente);
 		
 	
 	}

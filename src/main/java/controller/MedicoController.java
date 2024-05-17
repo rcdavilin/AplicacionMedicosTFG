@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,40 @@ public class MedicoController {
 
 		return medico;
 
+	}
+
+	public String[] findAlergenosPaciente(String dni) {
+		String[] medico = pacienteRepositoryImpl.findAlergenos(dni);
+		return medico;
+	}
+
+	public String[] findMedicamentosPaciente(String dni) {
+		String[] medico = pacienteRepositoryImpl.findMedicamentos(dni);
+		return medico;
+	}
+
+	public ArrayList<ArrayList<String>> findMedicamentosTratamiento(String dni) {
+		return pacienteRepositoryImpl.findMedicamentosTratamiento(dni);
+	}
+
+	public ArrayList<String> findEnfermedad(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findEnfermedad(nombre);
+		return medico;
+	}
+
+	public ArrayList<String> findInforme(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findInforme(nombre);
+		return medico;
+	}
+
+	public ArrayList<String> findFecha(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findFecha(nombre);
+		return medico;
+	}
+
+	public ArrayList<String> findTratamiento(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findTratamiento(nombre);
+		return medico;
 	}
 
 	public String findDniMedicoPorDni(String nombre) {
@@ -102,6 +137,7 @@ public class MedicoController {
 
 		return actualizado;
 	}
+
 	public Optional<Document> findByDniPaciente(String dni) {
 		Optional<Document> paciente = pacienteRepositoryImpl.findById(dni);
 
@@ -123,6 +159,11 @@ public class MedicoController {
 		return dniPacientes;
 	}
 
+	public String medicamentosString(String dni) {
+		String dniPacientes = pacienteRepositoryImpl.guardarMedicamentosString(dni);
+		return dniPacientes;
+	}
+
 	public Optional<Document> comprobarDni(String dni) {
 		Optional<Document> medicos = medicoRepositoryImpl.findById(dni);
 		return medicos;
@@ -136,7 +177,7 @@ public class MedicoController {
 	}
 
 	public Boolean anadirTarjeta(Optional<Document> medicos, String[] valor) {
-		List<String> list = Arrays.asList(valor); // Convertir array en lista
+		List<String> list = Arrays.asList(valor);
 
 		Boolean actualizado = pacienteRepositoryImpl.updateMedicamentosTarjeta(medicos, "Tarjeta_Medica", list);
 

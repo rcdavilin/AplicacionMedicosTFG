@@ -199,6 +199,7 @@ public class VerPacientesCargo extends JFrame {
 			comboBoxDniPacientes.setBounds(336, 33, 179, 21);
 			comboBoxDniPacientes.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					try {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 					textFieldDni.setText(controllerMedico.findDniPacientePorDni(selectedDni));
 					textFieldNombre.setText(controllerMedico.findNombrePacientePorDni(selectedDni));
@@ -209,6 +210,10 @@ public class VerPacientesCargo extends JFrame {
 					textFieldAltura.setText(controllerMedico.findAlturaPorDni(selectedDni) + "");
 					textFieldPeso.setText(controllerMedico.findPesoPorDni(selectedDni) + "");
 					textFieldGrupoSanguineo.setText(controllerMedico.findGrupoSanguineoPorDni(selectedDni));
+					}catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(VerPacientesCargo.this,
+							"Escoga un dni");
+					}
 
 				}
 			});

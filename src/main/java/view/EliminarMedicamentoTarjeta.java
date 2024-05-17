@@ -162,10 +162,10 @@ public class EliminarMedicamentoTarjeta extends JFrame {
 						Boolean actualizado = controllerMedico.eliminarMedicamentoTarjeta(paciente,
 								selectedMedicamento);
 						if (actualizado == true) {
-							lblMensaje.setText("El medico ha sido actualizado con exito");
+							lblMensaje.setText("Medicamentos eliminado de la tarjeta con exito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("El medico no ha sido actualizado con exito");
+							lblMensaje.setText("Medicamentos no eliminado de la tarjeta");
 							lblMensaje.setForeground(Color.RED);
 						}
 					} else {

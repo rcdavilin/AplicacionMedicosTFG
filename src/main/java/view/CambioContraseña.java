@@ -124,10 +124,10 @@ public class CambioContraseña extends JFrame {
 					if (password.equals(confirmarPassword)) {
 						Boolean anadido = medicoController.actualizarContraseña(dniMedico, "Contraseña", password);
 						if (anadido == true) {
-							lblMensaje.setText("El registro ha sido realizado con exito");
+							lblMensaje.setText("El cambio de contraseña ha sido realizado con exito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("El registro no ha sido realizado con exito");
+							lblMensaje.setText("El cambio de contraseña no ha sido realizado con exito");
 							lblMensaje.setForeground(Color.RED);
 						}
 						inicio = new InicioSesion();

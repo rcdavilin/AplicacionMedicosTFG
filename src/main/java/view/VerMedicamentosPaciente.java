@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import controller.MedicoController;
 import javax.swing.JButton;
 
-public class VerCitasConLosPacientes extends JFrame {
+public class VerMedicamentosPaciente extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -43,7 +43,7 @@ public class VerCitasConLosPacientes extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VerCitasConLosPacientes frame = new VerCitasConLosPacientes(dni);
+					VerMedicamentosPaciente frame = new VerMedicamentosPaciente(dni);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,7 +55,7 @@ public class VerCitasConLosPacientes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VerCitasConLosPacientes(String dni) {
+	public VerMedicamentosPaciente(String dni) {
 
 		AsignarCitaPaciente.dni = dni;
 		dniPaciente = controllerMedico.dniPacientes(dni);
@@ -86,17 +86,17 @@ public class VerCitasConLosPacientes extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
-					citas = controllerMedico.findbyCitasPaciente(selectedDni);
+					citas = controllerMedico.medicamentos(selectedDni);
 					
-					String todasLasCitas = "";
+					String todasLosMedicamentos = "";
 					for (int i = 0; i < citas.length; i++) {
-						todasLasCitas += citas[i] + "\n";
+						todasLosMedicamentos += citas[i] + "\n";
 					}
-					textAreaMostrar.setText(todasLasCitas);
+					textAreaMostrar.setText(todasLosMedicamentos);
 					
 				} catch (NullPointerException e1) {
-					JOptionPane.showMessageDialog(VerCitasConLosPacientes.this,
-							"El DNI " + selectedDni + " no tiene citas a cargo");
+					JOptionPane.showMessageDialog(VerMedicamentosPaciente.this,
+							"El DNI " + selectedDni + " no tiene medicamentos");
 				}
 			}
 		});

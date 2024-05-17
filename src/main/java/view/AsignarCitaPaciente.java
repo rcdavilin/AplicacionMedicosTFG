@@ -26,8 +26,8 @@ import org.bson.Document;
 
 import com.toedter.calendar.JDateChooser;
 
-import AplicacionReserva.ElegirTramoHorario;
 import controller.MedicoController;
+import miComponente.ComponenteHoras;
 
 public class AsignarCitaPaciente extends JFrame {
 
@@ -48,7 +48,7 @@ public class AsignarCitaPaciente extends JFrame {
 	VentanaPrincipalMedico principal;
 	JLabel lblMensaje;
 	DateFormat formateador;
-	ElegirTramoHorario elegirTramoHorario;
+	ComponenteHoras componenteHoras;
 
 	/**
 	 * Launch the application.
@@ -140,16 +140,18 @@ public class AsignarCitaPaciente extends JFrame {
 
 					Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
 					if (paciente.isPresent()) {
-						String citas = textFieldFechaSeleccionada.getText()+ " " +elegirTramoHorario.getHoraSeleccionada();
+						String citas = textFieldFechaSeleccionada.getText() + " " + componenteHoras.getHoras() + ":"
+								+ componenteHoras.getMinutos();
+						;
 						ArrayList<String> listaCitas = new ArrayList<String>();
 						listaCitas.add(citas);
-						
+
 						Boolean anadido = controllerMedico.addCitasPaciente(paciente, listaCitas);
 						if (anadido == true) {
-							lblMensaje.setText("El medico ha sido actualizado con exito");
+							lblMensaje.setText("Cita asignada al paceinte con exito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("El medico no ha sido actualizado con exito");
+							lblMensaje.setText("Cita no ha sido asignada al paceinte con exito");
 							lblMensaje.setForeground(Color.RED);
 						}
 					} else {
@@ -179,12 +181,11 @@ public class AsignarCitaPaciente extends JFrame {
 			lblMensaje.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			lblMensaje.setBounds(200, 406, 296, 21);
 			contentPane.add(lblMensaje);
-			
-			elegirTramoHorario = new ElegirTramoHorario();
-			elegirTramoHorario.setForeground(new Color(230, 230, 250));
-			elegirTramoHorario.setBackground(new Color(230, 230, 250));
-			elegirTramoHorario.setBounds(276, 94, 365, 222);
-			contentPane.add(elegirTramoHorario);
+
+			componenteHoras = new ComponenteHoras();
+			componenteHoras.setBackground(new Color(230, 230, 250));
+			componenteHoras.setBounds(295, 105, 346, 218);
+			contentPane.add(componenteHoras);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(AsignarCitaPaciente.this, "El DNI " + dni + " no pacientes a cargo");
 		}

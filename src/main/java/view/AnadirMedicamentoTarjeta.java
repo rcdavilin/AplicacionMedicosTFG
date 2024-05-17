@@ -119,10 +119,10 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 						String[] listaMedicamentos = medicamentos.split(" ");
 						Boolean anadido = controllerMedico.anadirTarjeta(paciente, listaMedicamentos);
 						if (anadido == true) {
-							lblMensaje.setText("El medico ha sido actualizado con exito");
+							lblMensaje.setText("Medicamentos añadidos a la tarjeta medica del paciente con exito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("El medico no ha sido actualizado con exito");
+							lblMensaje.setText("Medicamentos no han sido añadidos a la tarjeta medica del paciente con exito");
 							lblMensaje.setForeground(Color.RED);
 						}
 					} else {
@@ -142,7 +142,7 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 			contentPane.add(lblTitulo);
 
 			lblMensaje = new JLabel("");
-			lblMensaje.setBounds(156, 297, 293, 34);
+			lblMensaje.setBounds(129, 310, 348, 21);
 			contentPane.add(lblMensaje);
 
 			lblElijaElDni = new JLabel("Elija el DNI del paciente al que quiera añadirle medicamentos");
