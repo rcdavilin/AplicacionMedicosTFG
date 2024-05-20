@@ -1,10 +1,13 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.swing.DefaultComboBoxModel;
@@ -28,12 +31,18 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 	String[] dniPaciente;
 	MedicoController controllerMedico = new MedicoController();
 	String selectedDni;
-	private JTextField textFieldIntroduzcaMedicamentos;
-	private JLabel lblTitulo, lblElijaElDni, lblMensaje, lblEnEsteFormato, lblIntroduzcaMedicamentos;
+	private JLabel lblTitulo, lblElijaElDni, lblMensaje, lblIntroduzcaMedicamentos;
 	JButton btnCancelar, btnAceptar;
 	JComboBox<String> comboBoxDniPacientes;
 	VentanaPrincipalMedico principal;
 	static String dni;
+	private JButton btnAnadirCampo;
+	private JButton btnEliminarCampo;
+	private int textFieldXPosition = 384;
+	private int textFieldYPosition = 159; 
+    private final int textFieldHeight = 26; 
+    private final int textFieldSpacing = 10; 
+    private List<JTextField> textFields = new ArrayList<>(); // Lista para almacenar los JTextField
 
 	/**
 	 * Launch the application.
@@ -60,7 +69,7 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 			dniPaciente = controllerMedico.dniPacientes(dni);
 
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 646, 378);
+			setBounds(100, 100, 646, 483);
 			contentPane = new JPanel();
 			contentPane.setBackground(new Color(230, 230, 250));
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,8 +89,8 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 					lblIntroduzcaMedicamentos.setVisible(true);
-					lblEnEsteFormato.setVisible(true);
-					textFieldIntroduzcaMedicamentos.setVisible(true);
+					btnAnadirCampo.setVisible(true);
+					btnEliminarCampo.setVisible(true);
 				}
 			});
 			contentPane.add(comboBoxDniPacientes);
@@ -92,12 +101,6 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 			lblIntroduzcaMedicamentos.setBounds(10, 155, 381, 31);
 			contentPane.add(lblIntroduzcaMedicamentos);
 
-			textFieldIntroduzcaMedicamentos = new JTextField();
-			textFieldIntroduzcaMedicamentos.setVisible(false);
-			textFieldIntroduzcaMedicamentos.setBounds(384, 159, 222, 26);
-			contentPane.add(textFieldIntroduzcaMedicamentos);
-			textFieldIntroduzcaMedicamentos.setColumns(10);
-
 			btnCancelar = new JButton("Cancelar");
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -107,7 +110,7 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 				}
 			});
 			btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			btnCancelar.setBounds(145, 256, 95, 31);
+			btnCancelar.setBounds(147, 341, 95, 31);
 			contentPane.add(btnCancelar);
 
 			btnAceptar = new JButton("Aceptar");
@@ -115,14 +118,17 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
 					if (paciente.isPresent()) {
-						String medicamentos = textFieldIntroduzcaMedicamentos.getText();
-						String[] listaMedicamentos = medicamentos.split(" ");
+						List<String> medicamentosList = new ArrayList<>();
+						for (JTextField tf : textFields) {
+							medicamentosList.add(tf.getText());
+						}
+						String[] listaMedicamentos = medicamentosList.toArray(new String[0]);
 						Boolean anadido = controllerMedico.anadirTarjeta(paciente, listaMedicamentos);
 						if (anadido == true) {
-							lblMensaje.setText("Medicamentos añadidos a la tarjeta medica del paciente con exito");
+							lblMensaje.setText("Medicamentos añadidos a la tarjeta medica del paciente con éxito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("Medicamentos no han sido añadidos a la tarjeta medica del paciente con exito");
+							lblMensaje.setText("Medicamentos no han sido añadidos a la tarjeta medica del paciente con éxito");
 							lblMensaje.setForeground(Color.RED);
 						}
 					} else {
@@ -133,31 +139,71 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 				}
 			});
 			btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			btnAceptar.setBounds(370, 256, 90, 31);
+			btnAceptar.setBounds(372, 341, 90, 31);
 			contentPane.add(btnAceptar);
 
-			lblTitulo = new JLabel("Añadir medicamentos a la tarjeta sanitaria\r\n");
+			lblTitulo = new JLabel("Añadir medicamentos a la tarjeta sanitaria");
 			lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 14));
 			lblTitulo.setBounds(151, 25, 359, 25);
 			contentPane.add(lblTitulo);
 
 			lblMensaje = new JLabel("");
-			lblMensaje.setBounds(129, 310, 348, 21);
+			lblMensaje.setBounds(131, 395, 348, 21);
 			contentPane.add(lblMensaje);
 
 			lblElijaElDni = new JLabel("Elija el DNI del paciente al que quiera añadirle medicamentos");
 			lblElijaElDni.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			lblElijaElDni.setBounds(10, 86, 374, 25);
 			contentPane.add(lblElijaElDni);
+			
+			btnAnadirCampo = new JButton("Añadir campo");
+			btnAnadirCampo.setVisible(false);
+			btnAnadirCampo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					  anadirCampo();
+				}
+			});
+			btnAnadirCampo.setBounds(21, 216, 134, 21);
+			contentPane.add(btnAnadirCampo);
 
-			lblEnEsteFormato = new JLabel("En este formato Medicamento espacio Medicamento");
-			lblEnEsteFormato.setVisible(false);
-			lblEnEsteFormato.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblEnEsteFormato.setBounds(44, 178, 325, 25);
-			contentPane.add(lblEnEsteFormato);
+			btnEliminarCampo = new JButton("Eliminar campo");
+			btnEliminarCampo.setVisible(false);
+			btnEliminarCampo.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					  eliminarCampo();
+				}
+			});
+			btnEliminarCampo.setBounds(21, 247, 134, 21);
+			contentPane.add(btnEliminarCampo);
 
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(AnadirMedicamentoTarjeta.this, "El DNI " + dni + " no pacientes a cargo");
 		}
 	}
+
+	private void anadirCampo() {
+        JTextField campoNuevo = new JTextField();
+        campoNuevo.setBounds(textFieldXPosition, textFieldYPosition, 222, textFieldHeight);
+        contentPane.add(campoNuevo);
+        textFields.add(campoNuevo); 
+
+        textFieldYPosition += textFieldHeight + textFieldSpacing;
+        
+        contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
+        contentPane.revalidate();
+        contentPane.repaint();
+    }
+
+	private void eliminarCampo() {
+        if (!textFields.isEmpty()) {
+            JTextField lastField = textFields.remove(textFields.size() - 1);
+            contentPane.remove(lastField);
+
+            textFieldYPosition -= textFieldHeight + textFieldSpacing;
+
+            contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
+            contentPane.revalidate();
+            contentPane.repaint();
+        }
+    }
 }

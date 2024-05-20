@@ -121,7 +121,7 @@ public class AbrirCitas extends JFrame {
 					Optional<Document> medico = controllerMedico.findByDni(dni);
 					if (medico.isPresent()) {
 						String citas = textFieldFechaSeleccionada.getText() + " "
-								+ componenteHoras.getHoras() + ":" + componenteHoras.getMinutos();
+								+ componenteHoras.getFormato();
 						ArrayList<String> listaCitas = new ArrayList<String>();
 						listaCitas.add(citas);
 
@@ -163,7 +163,7 @@ public class AbrirCitas extends JFrame {
 			
 			componenteHoras = new ComponenteHoras();
 			componenteHoras.setBackground(new Color(230, 230, 250));
-			componenteHoras.setBounds(304, 105, 337, 199);
+			componenteHoras.setBounds(316, 88, 325, 226);
 			contentPane.add(componenteHoras);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(AbrirCitas.this, "El DNI " + dni + " no pacientes a cargo");

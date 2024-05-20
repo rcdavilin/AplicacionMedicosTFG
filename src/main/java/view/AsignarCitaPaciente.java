@@ -140,8 +140,7 @@ public class AsignarCitaPaciente extends JFrame {
 
 					Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
 					if (paciente.isPresent()) {
-						String citas = textFieldFechaSeleccionada.getText() + " " + componenteHoras.getHoras() + ":"
-								+ componenteHoras.getMinutos();
+						String citas = textFieldFechaSeleccionada.getText() + " " + componenteHoras.getFormato();
 						;
 						ArrayList<String> listaCitas = new ArrayList<String>();
 						listaCitas.add(citas);

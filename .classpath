@@ -57,6 +57,6 @@
 	<classpathentry kind="lib" path="C:/Users/mamj2/OneDrive/Documentos/jdatechooser_bin_doc_1_1_1/jdatechooser_bin_doc_1_1_1/lib/DateChooser.jar"/>
 	<classpathentry kind="lib" path="C:/Users/mamj2/OneDrive/Documentos/jcalendar-1.4/jcalendar-1.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/mamj2/OneDrive/Documentos/TramoHorario.jar"/>
-	<classpathentry kind="lib" path="ComponenteHoras.jar"/>
+	<classpathentry kind="lib" path="C:/Users/mamj2/OneDrive/Documentos/ComponenteHoras.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -70,7 +70,7 @@ public class EliminarMedicamentoTarjeta extends JFrame {
 			contentPane.setLayout(null);
 
 			lblTitulo = new JLabel("Elimina medicamentos de la tarjeta sanitaria\r\n");
-			lblTitulo.setBounds(81, 24, 387, 29);
+			lblTitulo.setBounds(106, 24, 387, 29);
 			lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 14));
 			contentPane.add(lblTitulo);
 
@@ -133,6 +133,7 @@ public class EliminarMedicamentoTarjeta extends JFrame {
 			contentPane.add(lblMedicamentoElegido);
 
 			textFieldMedicamento = new JTextField();
+			textFieldMedicamento.setEditable(false);
 			textFieldMedicamento.setBounds(303, 186, 190, 19);
 			textFieldMedicamento.setVisible(false);
 			contentPane.add(textFieldMedicamento);

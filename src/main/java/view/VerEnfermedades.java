@@ -157,7 +157,9 @@ public class VerEnfermedades extends JFrame {
                 if (posicionEnfermedad < enfermedad.size() - 1) {
                     posicionEnfermedad++;
                     mostrarDatosEnfermedad();
+                    actualizarEstadoBotones();
                 }
+                
             }
         });
 
@@ -171,12 +173,16 @@ public class VerEnfermedades extends JFrame {
                 if (posicionEnfermedad > 0) {
                     posicionEnfermedad--;
                     mostrarDatosEnfermedad();
+                    actualizarEstadoBotones();
                 }
+                
             }
         });
         btnAnteriorEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 12));
         btnAnteriorEnfermedad.setBounds(88, 400, 153, 32);
         contentPane.add(btnAnteriorEnfermedad);
+
+        
 
         btnVolver = new JButton("Volver");
         btnVolver.addActionListener(new ActionListener() {
@@ -194,6 +200,7 @@ public class VerEnfermedades extends JFrame {
         if (!enfermedad.isEmpty()) {
             mostrarDatosEnfermedad();
         }
+        actualizarEstadoBotones();
     }
 
     private void mostrarDatosEnfermedad() {
@@ -202,5 +209,10 @@ public class VerEnfermedades extends JFrame {
         textFieldTratamiento.setText(tratamiento.get(posicionEnfermedad));
         textFieldInforme.setText(informe.get(posicionEnfermedad));
         textAreaMedicamentosTratamiento.setText(String.join("\n", medicamentos.get(posicionEnfermedad)));
+    }
+    
+    private void actualizarEstadoBotones() {
+        btnAnteriorEnfermedad.setEnabled(posicionEnfermedad > 0);
+        btnSiguienteEnfermedad.setEnabled(posicionEnfermedad < enfermedad.size() - 1);
     }
 }

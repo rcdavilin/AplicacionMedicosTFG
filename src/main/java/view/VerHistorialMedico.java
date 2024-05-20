@@ -42,13 +42,13 @@ public class VerHistorialMedico extends JFrame {
 	JTextArea textAreaAlergenos;
 	JScrollPane scrollPaneMedicamentos;
 	JTextArea textAreaMedicamentos;
-	JLabel lblVerEnfermedades;
 	JButton btnNewButton;
 	VerEnfermedades enfermedades;
 	JLabel lblEnfermedades;
 	JScrollPane scrollPaneEnfermedades;
 	JTextArea textAreaEnfermedades;
 	ArrayList<String> enfermedad, fecha;
+	private JLabel lblVerHistorialMedico;
 
 	/**
 	 * Launch the application.
@@ -75,7 +75,7 @@ public class VerHistorialMedico extends JFrame {
 			dniPaciente = controllerMedico.dniPacientes(dni);
 
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 539, 494);
+			setBounds(100, 100, 539, 524);
 			contentPane = new JPanel();
 			contentPane.setBackground(new Color(230, 230, 250));
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -85,17 +85,17 @@ public class VerHistorialMedico extends JFrame {
 
 			lblIntroduzcaNombre = new JLabel("Introduzca el DNI del paciente");
 			lblIntroduzcaNombre.setFont(new Font("Tahoma", Font.BOLD, 13));
-			lblIntroduzcaNombre.setBounds(115, 31, 210, 22);
+			lblIntroduzcaNombre.setBounds(104, 75, 210, 22);
 			contentPane.add(lblIntroduzcaNombre);
 
 			lblAlergenos = new JLabel("Alérgenos:");
 			lblAlergenos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblAlergenos.setBounds(106, 123, 85, 22);
+			lblAlergenos.setBounds(95, 167, 85, 22);
 			contentPane.add(lblAlergenos);
 
 			lblMedicamentos = new JLabel("Medicamentos actuales:");
 			lblMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblMedicamentos.setBounds(60, 211, 131, 22);
+			lblMedicamentos.setBounds(49, 255, 131, 22);
 			contentPane.add(lblMedicamentos);
 
 			comboBoxDniPacientes = new JComboBox<String>();
@@ -105,7 +105,7 @@ public class VerHistorialMedico extends JFrame {
 				model.addElement(dniPaciente[i]);
 			}
 			comboBoxDniPacientes.setModel(model);
-			comboBoxDniPacientes.setBounds(336, 33, 179, 21);
+			comboBoxDniPacientes.setBounds(325, 77, 179, 21);
 			comboBoxDniPacientes.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
@@ -154,11 +154,11 @@ public class VerHistorialMedico extends JFrame {
 			});
 			btnVolver.setBackground(new Color(240, 240, 240));
 			btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			btnVolver.setBounds(10, 32, 85, 21);
+			btnVolver.setBounds(10, 76, 85, 21);
 			contentPane.add(btnVolver);
 
 			scrollPaneAlergenos = new JScrollPane();
-			scrollPaneAlergenos.setBounds(240, 103, 180, 70);
+			scrollPaneAlergenos.setBounds(229, 147, 180, 70);
 			contentPane.add(scrollPaneAlergenos);
 
 			textAreaAlergenos = new JTextArea();
@@ -166,17 +166,12 @@ public class VerHistorialMedico extends JFrame {
 			scrollPaneAlergenos.setViewportView(textAreaAlergenos);
 
 			scrollPaneMedicamentos = new JScrollPane();
-			scrollPaneMedicamentos.setBounds(240, 192, 180, 70);
+			scrollPaneMedicamentos.setBounds(229, 236, 180, 70);
 			contentPane.add(scrollPaneMedicamentos);
 
 			textAreaMedicamentos = new JTextArea();
 			textAreaMedicamentos.setEditable(false);
 			scrollPaneMedicamentos.setViewportView(textAreaMedicamentos);
-
-			lblVerEnfermedades = new JLabel("Ver enfermedades");
-			lblVerEnfermedades.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblVerEnfermedades.setBounds(91, 382, 131, 43);
-			contentPane.add(lblVerEnfermedades);
 
 			btnNewButton = new JButton("Ver enfermedades");
 			btnNewButton.addActionListener(new ActionListener() {
@@ -189,20 +184,25 @@ public class VerHistorialMedico extends JFrame {
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			btnNewButton.setBounds(260, 389, 131, 30);
+			btnNewButton.setBounds(191, 433, 131, 30);
 			contentPane.add(btnNewButton);
 
 			lblEnfermedades = new JLabel("Enfermedades");
 			lblEnfermedades.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblEnfermedades.setBounds(61, 305, 131, 22);
+			lblEnfermedades.setBounds(50, 349, 131, 22);
 			contentPane.add(lblEnfermedades);
 
 			scrollPaneEnfermedades = new JScrollPane();
-			scrollPaneEnfermedades.setBounds(240, 280, 180, 70);
+			scrollPaneEnfermedades.setBounds(229, 324, 180, 70);
 			contentPane.add(scrollPaneEnfermedades);
 
 			textAreaEnfermedades = new JTextArea();
 			scrollPaneEnfermedades.setViewportView(textAreaEnfermedades);
+			
+			lblVerHistorialMedico = new JLabel("Ver historial medico");
+			lblVerHistorialMedico.setFont(new Font("Tahoma", Font.BOLD, 15));
+			lblVerHistorialMedico.setBounds(166, 25, 192, 21);
+			contentPane.add(lblVerHistorialMedico);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(VerHistorialMedico.this, "El DNI " + dni + " no tiene pacientes a cargo");
 		}

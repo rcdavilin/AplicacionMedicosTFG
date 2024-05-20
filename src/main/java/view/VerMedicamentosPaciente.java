@@ -61,7 +61,7 @@ public class VerMedicamentosPaciente extends JFrame {
 		dniPaciente = controllerMedico.dniPacientes(dni);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 502, 376);
+		setBounds(100, 100, 534, 376);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,9 +69,9 @@ public class VerMedicamentosPaciente extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		lblVerCitasCon = new JLabel("Ver citas con los pacientes a cargo");
+		lblVerCitasCon = new JLabel("Ver medicamentos con los pacientes a cargo");
 		lblVerCitasCon.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblVerCitasCon.setBounds(21, 32, 233, 27);
+		lblVerCitasCon.setBounds(10, 32, 306, 27);
 		contentPane.add(lblVerCitasCon);
 
 		comboBoxDniPacientes = new JComboBox<String>();
@@ -81,7 +81,7 @@ public class VerMedicamentosPaciente extends JFrame {
 			model.addElement(dniPaciente[i]);
 		}
 		comboBoxDniPacientes.setModel(model);
-		comboBoxDniPacientes.setBounds(289, 36, 179, 21);
+		comboBoxDniPacientes.setBounds(331, 36, 179, 21);
 		comboBoxDniPacientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -103,13 +103,13 @@ public class VerMedicamentosPaciente extends JFrame {
 
 		contentPane.add(comboBoxDniPacientes);
 
-		lblNewLabel = new JLabel("Citas con los pacientes");
+		lblNewLabel = new JLabel("Medicamentos de los pacientes");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(31, 113, 157, 37);
+		lblNewLabel.setBounds(24, 113, 202, 37);
 		contentPane.add(lblNewLabel);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(194, 119, 274, 121);
+		scrollPane.setBounds(236, 119, 274, 121);
 		contentPane.add(scrollPane);
 
 		textAreaMostrar = new JTextArea();

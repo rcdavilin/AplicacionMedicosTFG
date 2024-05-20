@@ -129,34 +129,32 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<ArrayList<String>> findMedicamentosTratamiento(String medico) {
-	    Bson filter = eq(dni, medico);
-	    Document document = collection.find(filter).first();
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
 
-	    if (document == null) {
-	        return new ArrayList<>();
-	    }
+		if (document == null) {
+			return new ArrayList<>();
+		}
 
-	    ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
-	    ArrayList<ArrayList<String>> medicamentos = new ArrayList<>();
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<ArrayList<String>> medicamentos = new ArrayList<>();
 
-	    for (Document obj1 : enfermedades) {
-	        if (obj1.containsKey("Detalles")) {
-	            Document obj2 = (Document) obj1.get("Detalles");
-	            if (obj2.containsKey("Medicamentos")) {
-	                ArrayList<String> medicamento = (ArrayList<String>) obj2.get("Medicamentos");
-	                medicamentos.add(new ArrayList<>(medicamento)); 
-	            } else {
-	                medicamentos.add(new ArrayList<>()); 
-	            }
-	        } else {
-	            medicamentos.add(new ArrayList<>());
-	        }
-	    }
+		for (Document obj1 : enfermedades) {
+			if (obj1.containsKey("Detalles")) {
+				Document obj2 = (Document) obj1.get("Detalles");
+				if (obj2.containsKey("Medicamentos")) {
+					ArrayList<String> medicamento = (ArrayList<String>) obj2.get("Medicamentos");
+					medicamentos.add(new ArrayList<>(medicamento));
+				} else {
+					medicamentos.add(new ArrayList<>());
+				}
+			} else {
+				medicamentos.add(new ArrayList<>());
+			}
+		}
 
-	    return medicamentos;
+		return medicamentos;
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	public String[] findMedicamentos(String medico) {
@@ -165,6 +163,31 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		List<String> medicamentos = (List<String>) result.get("Medicamentos");
 		return medicamentos.toArray(new String[0]);
 	}
+
+	public String findEnfermedadIngreso(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document result = collection.find(filter).first();
+		Object dniList = result.get(enfermedad);
+		return (String) dniList;
+
+	}
+
+	public String findTipoEnfermedad(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document result = collection.find(filter).first();
+		Object dniList = result.get(tipo);
+		return (String) dniList;
+
+	}
+	
+	public String findFechaIngreso(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document result = collection.find(filter).first();
+		Object dniList = result.get("Fecha_Ingreso");
+		return (String) dniList;
+
+	}
+
 
 	public String findDniPorDni(String paciente) {
 		Bson filter = eq(dni, paciente);
@@ -362,23 +385,24 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}
-
-	public Boolean update(Optional<Document> paciente, String atributo, String valor) {
-		try {
-
-			if (paciente.isPresent()) {
-				Document filter = paciente.get(); // filtro para seleccionar el documento a actualizar
-				Document update = new Document("$set", new Document(atributo, valor));
-				collection.updateOne(filter, update);
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	
+	public Boolean updateEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo, String fechaIngreso) {
+	    try {
+	        if (paciente.isPresent()) {
+	            Document filter = new Document(dni, paciente.get().getString(dni));
+	            Document update = new Document("$set", new Document("Enfermedad", enfermedad)
+	                                                    .append("Tipo", tipo).append("Fecha_Ingreso", fechaIngreso));
+	            collection.updateOne(filter, update);
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
+
 
 	public Boolean update(Optional<Document> paciente, String atributo, Document valores) {
 		try {

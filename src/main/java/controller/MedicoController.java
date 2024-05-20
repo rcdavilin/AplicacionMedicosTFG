@@ -126,10 +126,26 @@ public class MedicoController {
 		return medico;
 	}
 
+	public String findEnfermedadIngreso(String nombre) {
+		String medico = pacienteRepositoryImpl.findEnfermedadIngreso(nombre);
+		return medico;
+	}
+	public String findTipo(String nombre) {
+		String medico = pacienteRepositoryImpl.findTipoEnfermedad(nombre);
+		return medico;
+	}
+	public String findFechaIngreso(String nombre) {
+		String medico = pacienteRepositoryImpl.findFechaIngreso(nombre);
+		return medico;
+	}
 	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
 		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
 
 		return actualizado;
+	}
+
+	public Boolean actualizarEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo, String fecha) {
+	    return pacienteRepositoryImpl.updateEnfermedadYTipo(paciente, enfermedad, tipo, fecha);
 	}
 
 	public Boolean abrirCitasPaciente(Optional<Document> dni, List<String> citas) {

@@ -5,8 +5,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -14,9 +15,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import controller.MedicoController;
-import javax.swing.border.LineBorder;
 
 public class VentanaPrincipalMedico extends JFrame {
 
@@ -27,7 +28,6 @@ public class VentanaPrincipalMedico extends JFrame {
 	InicioSesion inicio;
 	MedicoController controllerMedico = new MedicoController();
 	static String dni;
-	JCheckBox chckbxInfoPersonal;
 	VerPacientesCargo pacientesCargo;
 	AnadirMedicamentoTarjeta anadir;
 	JMenuBar menuBar;
@@ -48,6 +48,14 @@ public class VentanaPrincipalMedico extends JFrame {
 	private JMenuItem mntmVerMedicamentosPaciente;
 	VerMedicamentosPaciente verMedicamentos;
 	VerHistorialMedico historial;
+	private JMenu mnAnadirEnfermedadTipo;
+	JMenuItem mntmEnfermedadTipo;
+	AsignarEnfemerdadYTipo enfermedadTipo;
+	VerEnfermedadTipo enfermedad;
+	JMenuItem mntmVerEnferemedadTipo;
+	private JMenuItem mntmModificarEnfermedadTipo;
+	ModificarEnfermedadTipo modificarEnfermedad;
+	private JLabel lblNewLabel;
 	/**
 	 * Launch the application.
 	 */
@@ -84,25 +92,10 @@ public class VentanaPrincipalMedico extends JFrame {
 		lblTitulo.setBounds(39, 40, 243, 21);
 		contentPane.add(lblTitulo);
 		
-		chckbxInfoPersonal = new JCheckBox("Informacion personal");
-		chckbxInfoPersonal.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		chckbxInfoPersonal.setBackground(new Color(230, 230, 250));
-		chckbxInfoPersonal.setBounds(366, 41, 172, 21);
-		chckbxInfoPersonal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(chckbxInfoPersonal.isSelected()) {
-					info = new VentanaVerInfoPersonal(dni);
-					info.setVisible(true);
-					dispose();
-				}
-			}
-		});
-		contentPane.add(chckbxInfoPersonal);
-		
 		menuBar = new JMenuBar();
 		menuBar.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.setBackground(new Color(230, 230, 250));
-		menuBar.setBounds(10, 92, 514, 22);
+		menuBar.setBounds(0, 89, 534, 22);
 		contentPane.add(menuBar);
 		
 		mnVerPacientesCargo = new JMenu("Ver pacientes a cargo");
@@ -122,6 +115,7 @@ public class VentanaPrincipalMedico extends JFrame {
 		mnVerPacientesCargo.add(mntmVerPacientesCargo);
 		
 		mntmVerHistorialMedico = new JMenuItem("Ver historial medico");
+		mntmVerHistorialMedico.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerHistorialMedico.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				historial = new VerHistorialMedico(dni);
@@ -206,6 +200,57 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionMedicamentos.add(mntmVerMedicamentosPaciente);
+		
+		mnAnadirEnfermedadTipo = new JMenu("Enfermedad ingreso y tipo");
+		mnAnadirEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		menuBar.add(mnAnadirEnfermedadTipo);
+		
+		mntmEnfermedadTipo = new JMenuItem("Añadir enfermedad y tipo");
+		mntmEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmEnfermedadTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				enfermedadTipo = new AsignarEnfemerdadYTipo(dni);
+				enfermedadTipo.setVisible(true);
+				dispose();
+			}
+		});
+		mnAnadirEnfermedadTipo.add(mntmEnfermedadTipo);
+		
+		mntmVerEnferemedadTipo = new JMenuItem("Ver enfermedad ingreso y tipo");
+		mntmVerEnferemedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmVerEnferemedadTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				enfermedad = new VerEnfermedadTipo(dni);
+				enfermedad.setVisible(true);
+				dispose();
+			}
+		});
+		mnAnadirEnfermedadTipo.add(mntmVerEnferemedadTipo);
+		
+		mntmModificarEnfermedadTipo = new JMenuItem("Modificar enfermedad ingreso y tipo");
+		mntmModificarEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmModificarEnfermedadTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modificarEnfermedad = new ModificarEnfermedadTipo(dni);
+				modificarEnfermedad.setVisible(true);
+				dispose();
+			}
+		});
+		mnAnadirEnfermedadTipo.add(mntmModificarEnfermedadTipo);
+		
+		lblNewLabel = new JLabel("<html><u>Ver informacion personal</html></u>");
+		lblNewLabel.setForeground(new Color(0, 128, 255));
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				info = new VentanaVerInfoPersonal(dni);
+				info.setVisible(true);
+				dispose();
+			}
+		});
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setBounds(360, 41, 147, 21);
+		contentPane.add(lblNewLabel);
 		
 	
 	}

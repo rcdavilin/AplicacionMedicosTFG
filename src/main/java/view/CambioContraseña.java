@@ -36,6 +36,7 @@ public class CambioContraseña extends JFrame {
 	MedicoController medicoController = new MedicoController();
 	private JPasswordField passwordFieldContraseña, passwordFieldConfirmarContraseña;
 	private JRadioButton rdbtnMostrarContraseña, rdbtnMostrarContraseña_1;
+	private JLabel lblTitulo;
 
 	/**
 	 * Launch the application.
@@ -170,6 +171,11 @@ public class CambioContraseña extends JFrame {
 		rdbtnMostrarContraseña_1.setBackground(new Color(230, 230, 250));
 		rdbtnMostrarContraseña_1.setBounds(393, 168, 145, 21);
 		contentPane.add(rdbtnMostrarContraseña_1);
+		
+		lblTitulo = new JLabel("Cambio de contraseña");
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblTitulo.setBounds(175, 26, 217, 21);
+		contentPane.add(lblTitulo);
 		rdbtnMostrarContraseña_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdbtnMostrarContraseña_1.isSelected()) {
