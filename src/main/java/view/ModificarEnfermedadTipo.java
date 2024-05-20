@@ -105,7 +105,7 @@ public class ModificarEnfermedadTipo extends JFrame {
 						selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 						enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
 						tipo = controllerMedico.findTipo(selectedDni);
-						fecha = controllerMedico.findEnfermedadIngreso(selectedDni);
+						fecha = controllerMedico.findFechaIngreso(selectedDni);
 						textFieldEnfermedad.setText(enfermedad);
 						textFieldTipo.setText(tipo);
 						textFieldFechaIngreso.setText(fecha);
