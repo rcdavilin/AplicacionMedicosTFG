@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,8 +141,7 @@ public class GenerarInforme extends JFrame {
 				nombreMedico = controllerMedico.findNombreMedicoPorDni(dni);
 				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dni);
 				especialidad = controllerMedico.findEspecialidadPorDni(dni);
-				DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
-				String fechaFormateada = LocalDateTime.now().format(formateador);
+			
 				parametros.put("Dni", selectedDni);
 				parametros.put("Nombre", nombrePaciente);
 				parametros.put("Apellidos", apellidosPaciente);
@@ -159,8 +156,7 @@ public class GenerarInforme extends JFrame {
 				parametros.put("NombreMedico", nombreMedico);
 				parametros.put("ApellidosMedico", apellidosMedico);
 				parametros.put("EspecialidadMedico", especialidad);
-				parametros.put("Fecha_Informe", fechaFormateada);
-
+				
 				try {
 				    // Obtener los documentos de la colección
 				    List<Document> documents = new ArrayList<>();
@@ -203,7 +199,7 @@ public class GenerarInforme extends JFrame {
 				    progressDialog.add(progressLabel, BorderLayout.SOUTH);
 				    progressDialog.setVisible(true);
 
-				    Thread.sleep(3000); 
+				    Thread.sleep(10); 
 				    progressDialog.dispose(); 
 				    JasperExportManager.exportReportToPdfFile(informeGenerado, filepdf);
 				    JOptionPane.showMessageDialog(null, "Informe generado con éxito", "Generación de Informe", JOptionPane.INFORMATION_MESSAGE);
