@@ -130,8 +130,11 @@ public class VerHistorialMedico extends JFrame {
 						textAreaEnfermedades.setText(enfermedadesYFechas.toString());
 
 					} catch (NullPointerException e1) {
+						textAreaAlergenos.setText("");
+						textAreaMedicamentos.setText("");
+						textAreaEnfermedades.setText("");
 						JOptionPane.showMessageDialog(VerHistorialMedico.this,
-								"El DNI " + selectedDni + " no tiene enfermedades en su historial médico");
+								"El DNI " + selectedDni + " no tiene enfermedades, alergenos y medicamentos en su historial médico");
 					}
 				}
 
@@ -176,11 +179,18 @@ public class VerHistorialMedico extends JFrame {
 			btnNewButton = new JButton("Ver enfermedades");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					try {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 
 					enfermedades = new VerEnfermedades(dni, selectedDni);
 					enfermedades.setVisible(true);
 					dispose();
+					}catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(VerHistorialMedico.this,
+								"El DNI " + selectedDni + " no tiene enfermedades en su historial médico");
+					}
+						
+					
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));

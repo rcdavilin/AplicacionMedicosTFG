@@ -33,7 +33,6 @@ public class ModificarEnfermedadTipo extends JFrame {
 	JComboBox<String> comboBoxDniPacientes;
 	String selectedDni, enfermedad, tipo, fecha;
 	JLabel lblTipo, lblEnfermedad, lblIntroduzcaNombre;
-	JButton btnVolver;
 	VentanaPrincipalMedico principal;
 	JButton btnGuardar;
 	private JTextField textFieldEnfermedad;
@@ -42,6 +41,8 @@ public class ModificarEnfermedadTipo extends JFrame {
 	private JLabel lblModificarDiagnostico;
 	private JLabel lblFechaIngreso;
 	private JTextField textFieldFechaIngreso;
+	private JButton btnVolver;
+	private JButton btnDarDeAlts;
 
 	/**
 	 * Launch the application.
@@ -63,12 +64,13 @@ public class ModificarEnfermedadTipo extends JFrame {
 	 * Create the frame.
 	 */
 	public ModificarEnfermedadTipo(String dni) {
+		setResizable(false);
 		try {
 			ModificarEnfermedadTipo.dni = dni;
 			dniPaciente = controllerMedico.dniPacientes(dni);
 
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setBounds(100, 100, 539, 463);
+			setBounds(100, 100, 570, 464);
 			contentPane = new JPanel();
 			contentPane.setBackground(new Color(230, 230, 250));
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -106,9 +108,15 @@ public class ModificarEnfermedadTipo extends JFrame {
 						enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
 						tipo = controllerMedico.findTipo(selectedDni);
 						fecha = controllerMedico.findFechaIngreso(selectedDni);
-						textFieldEnfermedad.setText(enfermedad);
-						textFieldTipo.setText(tipo);
-						textFieldFechaIngreso.setText(fecha);
+						if (enfermedad != null && tipo != null && fecha != null) {
+							textFieldEnfermedad.setText(enfermedad);
+							textFieldTipo.setText(tipo);
+							textFieldFechaIngreso.setText(fecha);
+
+						} else {
+							JOptionPane.showMessageDialog(ModificarEnfermedadTipo.this,
+									"El DNI " + selectedDni + " no tiene un diagnostico");
+						}
 					} catch (NullPointerException e1) {
 						JOptionPane.showMessageDialog(ModificarEnfermedadTipo.this,
 								"El DNI " + selectedDni + " no tiene asignada una enferemedad y su tipo");
@@ -117,19 +125,6 @@ public class ModificarEnfermedadTipo extends JFrame {
 
 			});
 			contentPane.add(comboBoxDniPacientes);
-
-			btnVolver = new JButton("Volver");
-			btnVolver.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					principal = new VentanaPrincipalMedico(dni);
-					principal.setVisible(true);
-					dispose();
-				}
-			});
-			btnVolver.setBackground(new Color(240, 240, 240));
-			btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			btnVolver.setBounds(98, 331, 93, 35);
-			contentPane.add(btnVolver);
 
 			textFieldEnfermedad = new JTextField();
 			textFieldEnfermedad.setBounds(266, 158, 210, 19);
@@ -163,7 +158,7 @@ public class ModificarEnfermedadTipo extends JFrame {
 			    }
 			});
 
-			btnGuardar.setBounds(260, 331, 131, 35);
+			btnGuardar.setBounds(207, 330, 131, 35);
 			contentPane.add(btnGuardar);
 			
 			lblMensaje = new JLabel("");
@@ -173,7 +168,7 @@ public class ModificarEnfermedadTipo extends JFrame {
 			
 			lblModificarDiagnostico = new JLabel("Modificar diagnostico");
 			lblModificarDiagnostico.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lblModificarDiagnostico.setBounds(158, 26, 217, 21);
+			lblModificarDiagnostico.setBounds(171, 27, 217, 21);
 			contentPane.add(lblModificarDiagnostico);
 			
 			lblFechaIngreso = new JLabel("Fecha ingreso:");
@@ -185,6 +180,44 @@ public class ModificarEnfermedadTipo extends JFrame {
 			textFieldFechaIngreso.setColumns(10);
 			textFieldFechaIngreso.setBounds(266, 267, 210, 19);
 			contentPane.add(textFieldFechaIngreso);
+			
+			btnVolver = new JButton("Volver");
+			btnVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					principal = new VentanaPrincipalMedico(dni);
+					principal.setVisible(true);
+					dispose();
+				}
+			});
+			btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			btnVolver.setBounds(45, 330, 111, 35);
+			contentPane.add(btnVolver);
+			
+			btnDarDeAlts = new JButton("Dar de alta");
+			btnDarDeAlts.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int option = JOptionPane.showConfirmDialog(null, "¿Desea dar de alta al paciente?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+					if(option == JOptionPane.YES_OPTION) {
+						selectedDni = comboBoxDniPacientes.getSelectedItem().toString();
+						Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
+						if(paciente.isPresent()) {
+							Boolean actualizado = controllerMedico.eliminarDiagnostico(paciente, "Enfermedad", "Tipo", "Fecha_Ingreso");
+							if (actualizado) {
+					            lblMensaje.setText("Paciente dado de alta");
+					            lblMensaje.setForeground(Color.GREEN);
+					        } else {
+					            lblMensaje.setText("Paciente no ha sido dado de alta");
+					            lblMensaje.setForeground(Color.RED);
+					        }
+						}
+					}else{
+						
+					}
+				}
+			});
+			btnDarDeAlts.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			btnDarDeAlts.setBounds(384, 330, 131, 35);
+			contentPane.add(btnDarDeAlts);
 		} catch (NullPointerException e) {
 			JOptionPane.showMessageDialog(ModificarEnfermedadTipo.this, "El DNI " + dni + " no tiene pacientes a cargo");
 		}

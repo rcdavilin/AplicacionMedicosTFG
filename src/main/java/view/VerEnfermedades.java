@@ -164,7 +164,7 @@ public class VerEnfermedades extends JFrame {
         });
 
         btnSiguienteEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        btnSiguienteEnfermedad.setBounds(299, 400, 153, 32);
+        btnSiguienteEnfermedad.setBounds(299, 400, 179, 32);
         contentPane.add(btnSiguienteEnfermedad);
 
         btnAnteriorEnfermedad = new JButton("Anterior Enfermedad");

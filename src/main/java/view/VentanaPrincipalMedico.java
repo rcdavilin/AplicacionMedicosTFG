@@ -5,14 +5,13 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -24,38 +23,30 @@ public class VentanaPrincipalMedico extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	JLabel lblTitulo;
-	VentanaVerInfoPersonal info;
-	InicioSesion inicio;
 	MedicoController controllerMedico = new MedicoController();
 	static String dni;
 	VerPacientesCargo pacientesCargo;
 	AnadirMedicamentoTarjeta anadir;
-	JMenuBar menuBar;
-	JMenu mnVerPacientesCargo;
-	JMenuItem mntmVerPacientesCargo;
-	JMenu mnGestionCitas;
-	JMenuItem mntmAsignarCitasPacientes;
-	JMenuItem mntmAbrirCitasMedicas;
-	JMenuItem mntmVerCitasPacientes;
-	JMenu mnGestionMedicamentos;
-	JMenuItem mntmAñadirMedicamentosPaciente;
-	JMenuItem mntmEliminarMedicamentosPaciente;
-	JMenuItem mntmVerHistorialMedico ;
+	JMenuBar menuBar, menuBarInfoPersonalCerrarSesion;
+	JMenu mnNewMenu, mnVerPacientesCargo, mnGestionCitas, mnGestionMedicamentos, mnAnadirEnfermedadTipo,
+			mnGenerarInforme;
+	JMenuItem mntmVerPacientesCargo, mntmAsignarCitasPacientes, mntmAbrirCitasMedicas, mntmVerCitasPacientes,
+			mntmAñadirMedicamentosPaciente, mntmEliminarMedicamentosPaciente, mntmVerHistorialMedico,
+			mntmEnfermedadTipo, mntmVerEnferemedadTipo, mntmVerInformacionPersonal, mntmCerrarSesion,
+			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme;
+	VentanaVerInfoPersonal info;
+	InicioSesion inicio;
 	AsignarCitaPaciente asignar;
 	EliminarMedicamentoTarjeta eliminar;
 	VerCitasConLosPacientes verCitas;
 	AbrirCitas abrir;
-	private JMenuItem mntmVerMedicamentosPaciente;
 	VerMedicamentosPaciente verMedicamentos;
 	VerHistorialMedico historial;
-	private JMenu mnAnadirEnfermedadTipo;
-	JMenuItem mntmEnfermedadTipo;
 	AsignarEnfemerdadYTipo enfermedadTipo;
 	VerEnfermedadTipo enfermedad;
-	JMenuItem mntmVerEnferemedadTipo;
-	private JMenuItem mntmModificarEnfermedadTipo;
 	ModificarEnfermedadTipo modificarEnfermedad;
-	private JLabel lblNewLabel;
+	GenerarInforme informe;
+
 	/**
 	 * Launch the application.
 	 */
@@ -79,30 +70,30 @@ public class VentanaPrincipalMedico extends JFrame {
 		VentanaPrincipalMedico.dni = dni;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 558, 379);
-		
+		setBounds(100, 100, 606, 370);
+
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		lblTitulo = new JLabel("Bienvenido usuario: " + dni);
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTitulo.setBounds(39, 40, 243, 21);
 		contentPane.add(lblTitulo);
-		
+
 		menuBar = new JMenuBar();
 		menuBar.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.setBackground(new Color(230, 230, 250));
-		menuBar.setBounds(0, 89, 534, 22);
+		menuBar.setBounds(0, 95, 590, 22);
 		contentPane.add(menuBar);
-		
+
 		mnVerPacientesCargo = new JMenu("Ver pacientes a cargo");
 		mnVerPacientesCargo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mnVerPacientesCargo.setBackground(new Color(230, 230, 250));
 		menuBar.add(mnVerPacientesCargo);
-		
+
 		mntmVerPacientesCargo = new JMenuItem("Ver pacientes a cargo");
 		mntmVerPacientesCargo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerPacientesCargo.addActionListener(new ActionListener() {
@@ -113,7 +104,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnVerPacientesCargo.add(mntmVerPacientesCargo);
-		
+
 		mntmVerHistorialMedico = new JMenuItem("Ver historial medico");
 		mntmVerHistorialMedico.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerHistorialMedico.addActionListener(new ActionListener() {
@@ -124,12 +115,12 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnVerPacientesCargo.add(mntmVerHistorialMedico);
-		
+
 		mnGestionCitas = new JMenu("Gestion citas");
 		mnGestionCitas.setBackground(new Color(230, 230, 250));
 		mnGestionCitas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.add(mnGestionCitas);
-		
+
 		mntmAsignarCitasPacientes = new JMenuItem("Asignar citas a pacientes");
 		mntmAsignarCitasPacientes.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmAsignarCitasPacientes.addActionListener(new ActionListener() {
@@ -140,7 +131,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionCitas.add(mntmAsignarCitasPacientes);
-		
+
 		mntmAbrirCitasMedicas = new JMenuItem("Abrir citas medicas");
 		mntmAbrirCitasMedicas.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmAbrirCitasMedicas.addActionListener(new ActionListener() {
@@ -151,7 +142,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionCitas.add(mntmAbrirCitasMedicas);
-		
+
 		mntmVerCitasPacientes = new JMenuItem("Ver citas con los pacientes");
 		mntmVerCitasPacientes.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerCitasPacientes.addActionListener(new ActionListener() {
@@ -162,12 +153,12 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionCitas.add(mntmVerCitasPacientes);
-		
+
 		mnGestionMedicamentos = new JMenu("Gestion medicamentos");
 		mnGestionMedicamentos.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mnGestionMedicamentos.setBackground(new Color(230, 230, 250));
 		menuBar.add(mnGestionMedicamentos);
-		
+
 		mntmAñadirMedicamentosPaciente = new JMenuItem("Añadir medicamentos a paciente");
 		mntmAñadirMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmAñadirMedicamentosPaciente.addActionListener(new ActionListener() {
@@ -178,7 +169,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionMedicamentos.add(mntmAñadirMedicamentosPaciente);
-		
+
 		mntmEliminarMedicamentosPaciente = new JMenuItem("Eliminar medicamentos del paciente");
 		mntmEliminarMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmEliminarMedicamentosPaciente.addActionListener(new ActionListener() {
@@ -189,7 +180,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionMedicamentos.add(mntmEliminarMedicamentosPaciente);
-		
+
 		mntmVerMedicamentosPaciente = new JMenuItem("Ver medicamentos del paciente");
 		mntmVerMedicamentosPaciente.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerMedicamentosPaciente.addActionListener(new ActionListener() {
@@ -200,11 +191,11 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionMedicamentos.add(mntmVerMedicamentosPaciente);
-		
+
 		mnAnadirEnfermedadTipo = new JMenu("Enfermedad ingreso y tipo");
 		mnAnadirEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.add(mnAnadirEnfermedadTipo);
-		
+
 		mntmEnfermedadTipo = new JMenuItem("Añadir enfermedad y tipo");
 		mntmEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmEnfermedadTipo.addActionListener(new ActionListener() {
@@ -215,7 +206,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnAnadirEnfermedadTipo.add(mntmEnfermedadTipo);
-		
+
 		mntmVerEnferemedadTipo = new JMenuItem("Ver enfermedad ingreso y tipo");
 		mntmVerEnferemedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmVerEnferemedadTipo.addActionListener(new ActionListener() {
@@ -226,7 +217,7 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnAnadirEnfermedadTipo.add(mntmVerEnferemedadTipo);
-		
+
 		mntmModificarEnfermedadTipo = new JMenuItem("Modificar enfermedad ingreso y tipo");
 		mntmModificarEnfermedadTipo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmModificarEnfermedadTipo.addActionListener(new ActionListener() {
@@ -237,21 +228,57 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnAnadirEnfermedadTipo.add(mntmModificarEnfermedadTipo);
-		
-		lblNewLabel = new JLabel("<html><u>Ver informacion personal</html></u>");
-		lblNewLabel.setForeground(new Color(0, 128, 255));
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+
+		mnGenerarInforme = new JMenu("Generar informe");
+		menuBar.add(mnGenerarInforme);
+
+		mntmGenerarInforme = new JMenuItem("Generar informe");
+		mntmGenerarInforme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				informe = new GenerarInforme(dni);
+				informe.setVisible(true);
+				dispose();
+			}
+		});
+		mnGenerarInforme.add(mntmGenerarInforme);
+
+		menuBarInfoPersonalCerrarSesion = new JMenuBar();
+		menuBarInfoPersonalCerrarSesion.setBackground(new Color(230, 230, 250));
+		menuBarInfoPersonalCerrarSesion.setBorder(new LineBorder(new Color(0, 0, 0)));
+		menuBarInfoPersonalCerrarSesion.setBounds(447, 39, 87, 22);
+		contentPane.add(menuBarInfoPersonalCerrarSesion);
+
+		mnNewMenu = new JMenu("Perfil usuario");
+		mnNewMenu.setBackground(new Color(230, 230, 250));
+		mnNewMenu.setBorder(new LineBorder(new Color(0, 0, 0)));
+		menuBarInfoPersonalCerrarSesion.add(mnNewMenu);
+
+		mntmVerInformacionPersonal = new JMenuItem("Ver informacion personal");
+		mntmVerInformacionPersonal.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmVerInformacionPersonal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				info = new VentanaVerInfoPersonal(dni);
 				info.setVisible(true);
 				dispose();
 			}
 		});
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel.setBounds(360, 41, 147, 21);
-		contentPane.add(lblNewLabel);
-		
-	
+		mnNewMenu.add(mntmVerInformacionPersonal);
+
+		mntmCerrarSesion = new JMenuItem("Cerrar sesion");
+		mntmCerrarSesion.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmCerrarSesion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int option = JOptionPane.showConfirmDialog(null, "¿Seguro que quiere cerrar sesion?",
+						"Cierre de sesion", JOptionPane.YES_NO_OPTION);
+				if (option == JOptionPane.YES_OPTION) {
+					inicio = new InicioSesion();
+					inicio.setVisible(true);
+					dispose();
+
+				}
+			}
+		});
+		mnNewMenu.add(mntmCerrarSesion);
+
 	}
 }

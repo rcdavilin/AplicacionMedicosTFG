@@ -101,14 +101,20 @@ public class VerEnfermedadTipo extends JFrame {
 						enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
 						tipo = controllerMedico.findTipo(selectedDni);
 						fecha = controllerMedico.findFechaIngreso(selectedDni);
-						
-						textFieldEnfermedad.setText(enfermedad);
-						textFieldTipo.setText(tipo);
-						textFieldFechaIngreso.setText(fecha);
+
+						if (enfermedad != null && tipo != null && fecha != null) {
+							textFieldEnfermedad.setText(enfermedad);
+							textFieldTipo.setText(tipo);
+							textFieldFechaIngreso.setText(fecha);
+
+						} else {
+							JOptionPane.showMessageDialog(VerEnfermedadTipo.this,
+									"El DNI " + selectedDni + " no tiene un diagnostico");
+						}
 
 					} catch (NullPointerException e1) {
 						JOptionPane.showMessageDialog(VerEnfermedadTipo.this,
-								"El DNI " + selectedDni + " no tiene asignada una enferemedad y su tipo");
+								"El DNI " + selectedDni + " no tiene un diagnostico");
 					}
 				}
 
@@ -139,17 +145,17 @@ public class VerEnfermedadTipo extends JFrame {
 			textFieldTipo.setColumns(10);
 			textFieldTipo.setBounds(276, 254, 210, 19);
 			contentPane.add(textFieldTipo);
-			
+
 			lblVerEnfermedadIngreso = new JLabel("Ver enfermedad ingreso del paciente");
 			lblVerEnfermedadIngreso.setFont(new Font("Tahoma", Font.BOLD, 15));
 			lblVerEnfermedadIngreso.setBounds(115, 29, 303, 21);
 			contentPane.add(lblVerEnfermedadIngreso);
-			
+
 			lblFechaIngreso = new JLabel("Fecha ingreso:");
 			lblFechaIngreso.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			lblFechaIngreso.setBounds(74, 314, 131, 22);
 			contentPane.add(lblFechaIngreso);
-			
+
 			textFieldFechaIngreso = new JTextField();
 			textFieldFechaIngreso.setEditable(false);
 			textFieldFechaIngreso.setColumns(10);

@@ -143,6 +143,17 @@ public class MedicoController {
 
 		return actualizado;
 	}
+	public Boolean anadirInforme(Optional<Document> dni,  byte[] pdfBytes) {
+		Boolean actualizado = pacienteRepositoryImpl.guardarInforme(dni, pdfBytes);
+
+		return actualizado;
+	}
+
+	public Boolean eliminarDiagnostico(Optional<Document> dni, String enfermedad, String tipo, String fecha) {
+		Boolean actualizado = pacienteRepositoryImpl.eliminarEnfermedadIngreso(dni, enfermedad, tipo, fecha);
+
+		return actualizado;
+	}
 
 	public Boolean actualizarEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo, String fecha) {
 	    return pacienteRepositoryImpl.updateEnfermedadYTipo(paciente, enfermedad, tipo, fecha);

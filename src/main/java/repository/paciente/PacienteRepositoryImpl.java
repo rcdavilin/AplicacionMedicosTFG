@@ -179,7 +179,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return (String) dniList;
 
 	}
-	
+
 	public String findFechaIngreso(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
@@ -187,7 +187,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return (String) dniList;
 
 	}
-
 
 	public String findDniPorDni(String paciente) {
 		Bson filter = eq(dni, paciente);
@@ -325,6 +324,23 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return (String) medicamentosTarjeta;
 	}
 
+	public Boolean eliminarEnfermedadIngreso(Optional<Document> paciente, String enfermedad, String tipo,
+			String fecha) {
+		try {
+			if (paciente.isPresent()) {
+				Document filter = paciente.get();
+				collection.updateOne(eq(dni, filter.getString("Dni")),
+						Updates.combine(Updates.unset(enfermedad), Updates.unset(tipo), Updates.unset(fecha)));
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public Boolean updateCitasMedicos(Optional<Document> paciente, String atributo, List<String> citas) {
 		try {
 			if (paciente.isPresent()) {
@@ -344,7 +360,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		try {
 			if (paciente.isPresent()) {
 				Document filter = paciente.get();
-				collection.updateOne(eq(dni, filter.getString("Dni")), Updates.pushEach(atributo, valor));
+				collection.updateOne(eq(dni, filter.getString("Dni")), Updates.addEachToSet(atributo, valor));
 				return true;
 			} else {
 				return false;
@@ -385,25 +401,41 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 			return false;
 		}
 	}
-	
-	public Boolean updateEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo, String fechaIngreso) {
-	    try {
-	        if (paciente.isPresent()) {
-	            Document filter = new Document(dni, paciente.get().getString(dni));
-	            Document update = new Document("$set", new Document("Enfermedad", enfermedad)
-	                                                    .append("Tipo", tipo).append("Fecha_Ingreso", fechaIngreso));
-	            collection.updateOne(filter, update);
-	            return true;
-	        } else {
-	            return false;
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return false;
-	    }
+
+	public Boolean updateEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo,
+			String fechaIngreso) {
+		try {
+			if (paciente.isPresent()) {
+				Document filter = new Document(dni, paciente.get().getString(dni));
+				Document update = new Document("$set", new Document("Enfermedad", enfermedad).append("Tipo", tipo)
+						.append("Fecha_Ingreso", fechaIngreso));
+				collection.updateOne(filter, update);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-
+	public Boolean guardarInforme(Optional<Document> paciente, byte[] pdfBytes) {
+		try {
+			if (paciente.isPresent()) {
+				Document pdfInforme = new Document("pdf", pdfBytes);
+				Document filter = new Document(dni, paciente.get().getString(dni));
+				Document update = new Document("$push", new Document("Informes", pdfInforme));
+				collection.updateOne(filter, update);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	public Boolean update(Optional<Document> paciente, String atributo, Document valores) {
 		try {
 			if (paciente.isPresent()) {
