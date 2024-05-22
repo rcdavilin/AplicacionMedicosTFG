@@ -5,13 +5,6 @@
 	<groupId>palomafp.org</groupId>
 	<artifactId>AplicacionMedico</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<repositories>
-		<repository>
-			<id>jaspersoft-repo</id>
-			<url>
-				https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.mongodb</groupId>
@@ -38,6 +31,5 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
-
 	</dependencies>
 </project>

@@ -35,6 +35,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JsonDataSource;
 
+
 public class GenerarInforme extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -52,8 +53,8 @@ public class GenerarInforme extends JFrame {
 			especialidad, enfermedad, tipo, fechaIngreso, dniMedico;
 	String[] alergenos;
 	String[] medicamentos;
-	String filePath = "C:\\Users\\dmartinjimenez\\JaspersoftWorkspace\\MyReports\\InformePrueba";
-	String filejrxml = filePath + ".jrxml";
+	String filePath = "C:\\Users\\mamj2\\JaspersoftWorkspace\\MyReports\\Informe";
+	String fileJRXML = filePath + ".jrxml";
 	HashMap<String, Object> parametros = new HashMap<>();
 	JasperReport informeEXE;
 	JasperPrint informeGenerado;
@@ -129,7 +130,6 @@ public class GenerarInforme extends JFrame {
 					JOptionPane.YES_NO_OPTION);
 			if (option == JOptionPane.YES_OPTION) {
 				Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
-				Optional<Document> medico = controllerMedico.findByDni(dni);
 				alergenos = controllerMedico.findAlergenosPaciente(selectedDni);
 				medicamentos = controllerMedico.findMedicamentosPaciente(selectedDni);
 				nombrePaciente = controllerMedico.findNombrePacientePorDni(selectedDni);
@@ -140,31 +140,32 @@ public class GenerarInforme extends JFrame {
 				tipo = controllerMedico.findTipo(selectedDni);
 				fechaIngreso = controllerMedico.findFechaIngreso(selectedDni);
 				dniMedico = controllerMedico.findDniMedico(selectedDni);
+				Optional<Document> medico = controllerMedico.findByDni(dniMedico);
 				nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico);
 				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico);
 				especialidad = controllerMedico.findEspecialidadPorDni(dniMedico);
-
-				parametros.put("dniPaciente", selectedDni);
-				parametros.put("nombrePaciente", nombrePaciente);
-				parametros.put("apellidosPaciente", apellidosPaciente);
-				parametros.put("fechaNacimientoPaciente", fechaNaciemiento);
-				parametros.put("sexoPaciente", sexo);
-				parametros.put("alergenos", String.join(", ", alergenos));
-				parametros.put("medicamentos", String.join(", ", medicamentos));
-				parametros.put("enfermedad", enfermedad);
-				parametros.put("tipo", tipo);
-				parametros.put("fechaIngreso", fechaIngreso);
-				parametros.put("dniMedico", dniMedico);
-				parametros.put("nombreMedico", nombreMedico);
-				parametros.put("apellidosMedico", apellidosMedico);
-				parametros.put("especialidadMedico", especialidad);
+				
+				parametros.put("Dni", selectedDni);
+				parametros.put("Nombre", nombrePaciente);
+				parametros.put("Apellidos", apellidosPaciente);
+				parametros.put("Fecha_Nacimiento", fechaNaciemiento);
+				parametros.put("Sexo", sexo);
+				parametros.put("Alergenos", String.join(", ", alergenos));
+				parametros.put("Medicamentos", String.join(", ", medicamentos));
+				parametros.put("Enfermedad", enfermedad);
+				parametros.put("Tipo", tipo);
+				parametros.put("Fecha_Ingreso", fechaIngreso);
+				parametros.put("Dni_Medico", dniMedico);
+				parametros.put("Nombre_Medico", nombreMedico);
+				parametros.put("Apellidos_Medico", apellidosMedico);
+				parametros.put("Especialidad_Medico", especialidad);
 
 				try {
 
 					List<Document> documents = new ArrayList<>();
 					paciente.ifPresent(documents::add);
-					List<Document> data2 = new ArrayList<>();
-					medico.ifPresent(data2::add);
+					medico.ifPresent(documents::add);
+					
 					
 					ObjectMapper mapper = new ObjectMapper();
 					ArrayNode arrayNode = mapper.createArrayNode();
@@ -173,17 +174,14 @@ public class GenerarInforme extends JFrame {
 						ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
 						arrayNode.add(objectNode);
 					}
-					for (Document doc : data2) {
-						ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
-						arrayNode.add(objectNode);
-					}
+					
 
 					String json = arrayNode.toString();
 
 					ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(json.getBytes());
 					JsonDataSource dataSource = new JsonDataSource(jsonDataStream);
 
-					JasperReport informeEXE = JasperCompileManager.compileReport(filejrxml);
+					JasperReport informeEXE = JasperCompileManager.compileReport(fileJRXML);
 					JasperPrint informeGenerado = JasperFillManager.fillReport(informeEXE, parametros, dataSource);
 
 					JDialog progressDialog = new JDialog();
