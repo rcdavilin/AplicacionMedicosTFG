@@ -260,6 +260,13 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
 	}
 
+	public String findDniMedico(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document result = collection.find(filter).first();
+		Object grupoSanguineoDni = result.get("Dni_Medico");
+		return (String) grupoSanguineoDni;
+
+	}
 	@Override
 	public Boolean save(Document entity) {
 		try {

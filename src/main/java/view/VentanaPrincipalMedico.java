@@ -70,7 +70,7 @@ public class VentanaPrincipalMedico extends JFrame {
 		VentanaPrincipalMedico.dni = dni;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 606, 370);
+		setBounds(100, 100, 643, 370);
 
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(230, 230, 250));
@@ -86,7 +86,7 @@ public class VentanaPrincipalMedico extends JFrame {
 		menuBar = new JMenuBar();
 		menuBar.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.setBackground(new Color(230, 230, 250));
-		menuBar.setBounds(0, 95, 590, 22);
+		menuBar.setBounds(0, 96, 627, 22);
 		contentPane.add(menuBar);
 
 		mnVerPacientesCargo = new JMenu("Ver pacientes a cargo");
@@ -230,9 +230,11 @@ public class VentanaPrincipalMedico extends JFrame {
 		mnAnadirEnfermedadTipo.add(mntmModificarEnfermedadTipo);
 
 		mnGenerarInforme = new JMenu("Generar informe");
+		mnGenerarInforme.setBorder(new LineBorder(new Color(0, 0, 0)));
 		menuBar.add(mnGenerarInforme);
 
 		mntmGenerarInforme = new JMenuItem("Generar informe");
+		mntmGenerarInforme.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mntmGenerarInforme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				informe = new GenerarInforme(dni);

@@ -49,10 +49,10 @@ public class GenerarInforme extends JFrame {
 	VentanaPrincipalMedico principal;
 	JButton btnGenerar;
 	String selectedDni, nombrePaciente, apellidosPaciente, nombreMedico, apellidosMedico, fechaNaciemiento, sexo,
-			especialidad, enfermedad, tipo, fechaIngreso;
+			especialidad, enfermedad, tipo, fechaIngreso, dniMedico;
 	String[] alergenos;
 	String[] medicamentos;
-	String filePath = "C:\\Users\\mamj2\\JaspersoftWorkspace\\MyReports\\Informe";
+	String filePath = "C:\\Users\\dmartinjimenez\\JaspersoftWorkspace\\MyReports\\InformePrueba";
 	String filejrxml = filePath + ".jrxml";
 	HashMap<String, Object> parametros = new HashMap<>();
 	JasperReport informeEXE;
@@ -129,6 +129,7 @@ public class GenerarInforme extends JFrame {
 					JOptionPane.YES_NO_OPTION);
 			if (option == JOptionPane.YES_OPTION) {
 				Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
+				Optional<Document> medico = controllerMedico.findByDni(dni);
 				alergenos = controllerMedico.findAlergenosPaciente(selectedDni);
 				medicamentos = controllerMedico.findMedicamentosPaciente(selectedDni);
 				nombrePaciente = controllerMedico.findNombrePacientePorDni(selectedDni);
@@ -138,74 +139,76 @@ public class GenerarInforme extends JFrame {
 				enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
 				tipo = controllerMedico.findTipo(selectedDni);
 				fechaIngreso = controllerMedico.findFechaIngreso(selectedDni);
-				nombreMedico = controllerMedico.findNombreMedicoPorDni(dni);
-				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dni);
-				especialidad = controllerMedico.findEspecialidadPorDni(dni);
-			
-				parametros.put("Dni", selectedDni);
-				parametros.put("Nombre", nombrePaciente);
-				parametros.put("Apellidos", apellidosPaciente);
-				parametros.put("Fecha_Nacimiento", fechaNaciemiento);
-				parametros.put("Sexo", sexo);
-				parametros.put("Alergenos", String.join(", ", alergenos));
-				parametros.put("Medicamentos", String.join(", ", medicamentos));
-				parametros.put("Enfermedad", enfermedad);
-				parametros.put("Tipo", tipo);
-				parametros.put("Fecha_Ingreso", fechaIngreso);
-				parametros.put("DniMedico", dni);
-				parametros.put("NombreMedico", nombreMedico);
-				parametros.put("ApellidosMedico", apellidosMedico);
-				parametros.put("EspecialidadMedico", especialidad);
-				
+				dniMedico = controllerMedico.findDniMedico(selectedDni);
+				nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico);
+				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico);
+				especialidad = controllerMedico.findEspecialidadPorDni(dniMedico);
+
+				parametros.put("dniPaciente", selectedDni);
+				parametros.put("nombrePaciente", nombrePaciente);
+				parametros.put("apellidosPaciente", apellidosPaciente);
+				parametros.put("fechaNacimientoPaciente", fechaNaciemiento);
+				parametros.put("sexoPaciente", sexo);
+				parametros.put("alergenos", String.join(", ", alergenos));
+				parametros.put("medicamentos", String.join(", ", medicamentos));
+				parametros.put("enfermedad", enfermedad);
+				parametros.put("tipo", tipo);
+				parametros.put("fechaIngreso", fechaIngreso);
+				parametros.put("dniMedico", dniMedico);
+				parametros.put("nombreMedico", nombreMedico);
+				parametros.put("apellidosMedico", apellidosMedico);
+				parametros.put("especialidadMedico", especialidad);
+
 				try {
-				    // Obtener los documentos de la colección
-				    List<Document> documents = new ArrayList<>();
-				    paciente.ifPresent(documents::add);
 
-				    // Crear el ObjectMapper de Jackson
-				    ObjectMapper mapper = new ObjectMapper();
-				    ArrayNode arrayNode = mapper.createArrayNode();
+					List<Document> documents = new ArrayList<>();
+					paciente.ifPresent(documents::add);
+					List<Document> data2 = new ArrayList<>();
+					medico.ifPresent(data2::add);
+					
+					ObjectMapper mapper = new ObjectMapper();
+					ArrayNode arrayNode = mapper.createArrayNode();
 
-				    // Convertir cada documento a ObjectNode y añadir al ArrayNode
-				    for (Document doc : documents) {
-				        ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
-				        arrayNode.add(objectNode);
-				    }
+					for (Document doc : documents) {
+						ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
+						arrayNode.add(objectNode);
+					}
+					for (Document doc : data2) {
+						ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
+						arrayNode.add(objectNode);
+					}
 
-				   
-				    String json = arrayNode.toString();
+					String json = arrayNode.toString();
 
-				    
-				    ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(json.getBytes());
-				    JsonDataSource dataSource = new JsonDataSource(jsonDataStream);
+					ByteArrayInputStream jsonDataStream = new ByteArrayInputStream(json.getBytes());
+					JsonDataSource dataSource = new JsonDataSource(jsonDataStream);
 
-				
-				    JasperReport informeEXE = JasperCompileManager.compileReport(filejrxml);
-				    JasperPrint informeGenerado = JasperFillManager.fillReport(informeEXE, parametros, dataSource);
+					JasperReport informeEXE = JasperCompileManager.compileReport(filejrxml);
+					JasperPrint informeGenerado = JasperFillManager.fillReport(informeEXE, parametros, dataSource);
 
-				   
-				    JDialog progressDialog = new JDialog();
-				    progressDialog.setTitle("Generando Informe");
-				    progressDialog.setModal(true);
-				    progressDialog.setLayout(new BorderLayout());
-				    progressDialog.setSize(300, 100);
-				    progressDialog.setLocationRelativeTo(null); 
+					JDialog progressDialog = new JDialog();
+					progressDialog.setTitle("Generando Informe");
+					progressDialog.setModal(true);
+					progressDialog.setLayout(new BorderLayout());
+					progressDialog.setSize(300, 100);
+					progressDialog.setLocationRelativeTo(null);
 
-				    JProgressBar progressBar = new JProgressBar();
-				    progressBar.setIndeterminate(true); 
-				    progressDialog.add(progressBar, BorderLayout.CENTER);
+					JProgressBar progressBar = new JProgressBar();
+					progressBar.setIndeterminate(true);
+					progressDialog.add(progressBar, BorderLayout.CENTER);
 
-				    JLabel progressLabel = new JLabel("Generando informe...");
-				    progressDialog.add(progressLabel, BorderLayout.SOUTH);
-				    progressDialog.setVisible(true);
+					JLabel progressLabel = new JLabel("Generando informe...");
+					progressDialog.add(progressLabel, BorderLayout.SOUTH);
+					progressDialog.setVisible(true);
 
-				    Thread.sleep(10); 
-				    progressDialog.dispose(); 
-				    JasperExportManager.exportReportToPdfFile(informeGenerado, filepdf);
-				    JOptionPane.showMessageDialog(null, "Informe generado con éxito", "Generación de Informe", JOptionPane.INFORMATION_MESSAGE);
+					Thread.sleep(10);
+					progressDialog.dispose();
+					JasperExportManager.exportReportToPdfFile(informeGenerado, filepdf);
+					JOptionPane.showMessageDialog(null, "Informe generado con éxito", "Generación de Informe",
+							JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception ex) {
-				    ex.printStackTrace();
+					ex.printStackTrace();
 				}
 
 			}

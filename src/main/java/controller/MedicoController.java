@@ -138,6 +138,11 @@ public class MedicoController {
 		String medico = pacienteRepositoryImpl.findFechaIngreso(nombre);
 		return medico;
 	}
+	
+	public String findDniMedico(String nombre) {
+		String medico = pacienteRepositoryImpl.findDniMedico(nombre);
+		return medico;
+	}
 	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
 		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
 
