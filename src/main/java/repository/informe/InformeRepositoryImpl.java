@@ -76,10 +76,10 @@ public class InformeRepositoryImpl implements InformeRepository {
 		return resultado;
 	}
 
-	public Boolean guardarInforme(Optional<Document> paciente, byte[] pdfBytes) {
+	public Boolean guardarInforme(Optional<Document> paciente, byte[] pdfBytes, String hora) {
 		try {
 			if (paciente.isPresent()) {
-				Document pdfInforme = new Document("pdf", new Binary(pdfBytes));
+				Document pdfInforme = new Document("pdf", new Binary(pdfBytes)).append("Hora_Creacion", hora);
 				Document filter = new Document("Dni_Paciente", paciente.get().getString("Dni_Paciente"));
 				Document update = new Document("$push", new Document("Informes", pdfInforme));
 
@@ -114,4 +114,28 @@ public class InformeRepositoryImpl implements InformeRepository {
 
 		return informes;
 	}
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findFechaCreacion(String medico) {
+	    Bson filter = eq("Dni_Paciente", medico);
+	    Document document = collection.find(filter).first();
+
+	    if (document == null) {
+	        return new ArrayList<>();
+	    }
+
+	    ArrayList<Document> informes = (ArrayList<Document>) document.get("Informes");
+	    ArrayList<String> fechas = new ArrayList<>();
+
+	    if (informes != null) {
+	        for (Document informe : informes) {
+	            if (informe.containsKey("Hora_Creacion")) {
+	                fechas.add(informe.getString("Hora_Creacion"));
+	            }
+	        }
+	    }
+
+	    return fechas;
+	}
+
+
 }

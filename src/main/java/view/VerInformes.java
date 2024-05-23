@@ -39,6 +39,7 @@ public class VerInformes extends JFrame {
     private JButton btnCancelar;
     VentanaPrincipalMedico principal;
     ArrayList<byte[]> informes;
+    ArrayList<String> horaCreacion;
 
     /**
      * Launch the application.
@@ -65,11 +66,11 @@ public class VerInformes extends JFrame {
         dniPaciente = controllerMedico.dniPacientes(dni);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 502, 376);
+        setBounds(100, 100, 502, 389);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(230, 230, 250));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(null); // Set layout to null
+        contentPane.setLayout(null);
 
         setContentPane(contentPane);
 
@@ -91,18 +92,20 @@ public class VerInformes extends JFrame {
                 try {
                     selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
                     informes = controllerMedico.findInformeJaspersoft(selectedDni);
-
-                    panelInformes.removeAll();
-
-                    for (int i = 0; i < informes.size(); i++) {
-                        JLabel informeLabel = new JLabel("Informe " + (i + 1));
+                    horaCreacion = controllerMedico.findHoraCreacion(selectedDni);
+                  
+                    panelInformes.removeAll(); 
+                    int totalHeight = 10 + informes.size() * 40; 
+                    panelInformes.setPreferredSize(new java.awt.Dimension(400, totalHeight)); 
+                    for (int i = 0; i < informes.size() && i < horaCreacion.size(); i++) {
+                        JLabel informeLabel = new JLabel("Informe " + (i + 1) + ": generado el " + horaCreacion.get(i));
                         informeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-                        informeLabel.setBounds(30, 10+(i * 40), 100, 15); // Set position and size
+                        informeLabel.setBounds(10, 10 + (i * 40), 320, 15);
                         panelInformes.add(informeLabel);
 
                         JButton downloadButton = new JButton("Descargar " + (i + 1));
                         downloadButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-                        downloadButton.setBounds(100, 10+(i * 40), 100, 15); // Set position and size
+                        downloadButton.setBounds(350, 10 + (i * 40), 100, 15);
                         int index = i;
                         downloadButton.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
@@ -123,7 +126,7 @@ public class VerInformes extends JFrame {
         });
 
         contentPane.add(comboBoxDniPacientes);
-
+        
         lblNewLabel = new JLabel("Informes de los pacientes");
         lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
         lblNewLabel.setBounds(31, 70, 157, 37);
@@ -131,7 +134,7 @@ public class VerInformes extends JFrame {
 
         scrollPane = new JScrollPane();
         scrollPane.setBackground(new Color(230, 230, 250));
-        scrollPane.setBounds(219, 70, 238, 201);
+        scrollPane.setBounds(10, 100, 468, 201);
         contentPane.add(scrollPane);
 
         panelInformes = new JPanel();
@@ -148,7 +151,7 @@ public class VerInformes extends JFrame {
             }
         });
         btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        btnCancelar.setBounds(186, 282, 85, 27);
+        btnCancelar.setBounds(194, 315, 85, 27);
         contentPane.add(btnCancelar);
     }
 

@@ -164,13 +164,17 @@ public class MedicoController {
 		String medico = pacienteRepositoryImpl.findDniMedico(nombre);
 		return medico;
 	}
+	public ArrayList<String> findHoraCreacion(String nombre) {
+		ArrayList<String> medico = informeRespositoryImpl.findFechaCreacion(nombre);
+		return medico;
+	}
 	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
 		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
 
 		return actualizado;
 	}
-	public Boolean anadirInforme(Optional<Document> dni,  byte[] pdfBytes) {
-		Boolean actualizado = informeRespositoryImpl.guardarInforme(dni, pdfBytes);
+	public Boolean anadirInforme(Optional<Document> dni,  byte[] pdfBytes, String hora) {
+		Boolean actualizado = informeRespositoryImpl.guardarInforme(dni, pdfBytes, hora);
 
 		return actualizado;
 	}

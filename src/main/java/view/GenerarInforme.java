@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +59,7 @@ public class GenerarInforme extends JFrame {
 			especialidad, enfermedad, tipo, fechaIngreso, dniMedico;
 	String[] alergenos;
 	String[] medicamentos;
-	String filePath = "C:\\Users\\dmartinjimenez\\JaspersoftWorkspace\\MyReports\\InformePrueba";
+	String filePath = "C:\\Users\\mamj2\\JaspersoftWorkspace\\MyReports\\InformePrueba";
 	String fileJRXML = filePath + ".jrxml";
 	HashMap<String, Object> parametros = new HashMap<>();
 	JasperReport informeEXE;
@@ -221,7 +223,9 @@ public class GenerarInforme extends JFrame {
 						try (FileInputStream fis = new FileInputStream(pdfFile)) {
 							fis.read(pdfData);
 						}
-						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData);
+						DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
+				        String fechaFormateada = LocalDateTime.now().format(formateador);
+						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData, fechaFormateada);
 						if (guardado) {
 							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
 
@@ -238,7 +242,9 @@ public class GenerarInforme extends JFrame {
 						try (FileInputStream fis = new FileInputStream(pdfFile)) {
 							fis.read(pdfData);
 						}
-						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData);
+						DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
+				        String fechaFormateada = LocalDateTime.now().format(formateador);
+						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData, fechaFormateada);
 						if (guardado) {
 							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
 
