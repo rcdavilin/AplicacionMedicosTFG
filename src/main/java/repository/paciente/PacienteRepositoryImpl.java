@@ -108,7 +108,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findInforme(String medico) {
+	public ArrayList<String> findInformeHistorialMedico(String medico) {
 		Bson filter = eq(dni, medico);
 		Document document = collection.find(filter).first();
 
@@ -427,22 +427,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		}
 	}
 
-	public Boolean guardarInforme(Optional<Document> paciente, byte[] pdfBytes) {
-		try {
-			if (paciente.isPresent()) {
-				Document pdfInforme = new Document("pdf", pdfBytes);
-				Document filter = new Document(dni, paciente.get().getString(dni));
-				Document update = new Document("$push", new Document("Informes", pdfInforme));
-				collection.updateOne(filter, update);
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+	
 	public Boolean update(Optional<Document> paciente, String atributo, Document valores) {
 		try {
 			if (paciente.isPresent()) {

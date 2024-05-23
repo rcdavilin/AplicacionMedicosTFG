@@ -33,7 +33,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	JMenuItem mntmVerPacientesCargo, mntmAsignarCitasPacientes, mntmAbrirCitasMedicas, mntmVerCitasPacientes,
 			mntmAñadirMedicamentosPaciente, mntmEliminarMedicamentosPaciente, mntmVerHistorialMedico,
 			mntmEnfermedadTipo, mntmVerEnferemedadTipo, mntmVerInformacionPersonal, mntmCerrarSesion,
-			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme;
+			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme, mntmVerInforme;
 	VentanaVerInfoPersonal info;
 	InicioSesion inicio;
 	AsignarCitaPaciente asignar;
@@ -46,6 +46,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	VerEnfermedadTipo enfermedad;
 	ModificarEnfermedadTipo modificarEnfermedad;
 	GenerarInforme informe;
+	VerInformes informes;
 
 	/**
 	 * Launch the application.
@@ -243,6 +244,17 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGenerarInforme.add(mntmGenerarInforme);
+		
+		mntmVerInforme = new JMenuItem("Ver informe");
+		mntmVerInforme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				informes = new VerInformes(dni);
+				informes.setVisible(true);
+				dispose();
+			}
+		});
+		mntmVerInforme.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mnGenerarInforme.add(mntmVerInforme);
 
 		menuBarInfoPersonalCerrarSesion = new JMenuBar();
 		menuBarInfoPersonalCerrarSesion.setBackground(new Color(230, 230, 250));

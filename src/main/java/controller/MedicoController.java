@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.bson.Document;
 
+import model.Informe;
+import repository.informe.InformeRepositoryImpl;
 import repository.medico.MedicoRepositoryImpl;
 import repository.paciente.PacienteRepositoryImpl;
 
@@ -14,6 +16,7 @@ public class MedicoController {
 
 	private final MedicoRepositoryImpl medicoRepositoryImpl = new MedicoRepositoryImpl();
 	private final PacienteRepositoryImpl pacienteRepositoryImpl = new PacienteRepositoryImpl();
+	private final InformeRepositoryImpl informeRespositoryImpl = new InformeRepositoryImpl();
 
 	public Optional<Document> findByDni(String dni) {
 		Optional<Document> medico = medicoRepositoryImpl.findById(dni);
@@ -22,6 +25,20 @@ public class MedicoController {
 
 	}
 
+	public Document anadirDniPaciente(String dni) {
+		Document informe;
+		informe = new Informe().append("Dni_Paciente", dni);
+
+		return informe;
+	}
+	public Optional<Document> comprobarDniPaciente(String dni) {
+
+		Optional<Document> informe = informeRespositoryImpl.findById(dni);
+		return informe;
+	}
+	public Boolean salvarDniMedico(Document paciente) {
+		return informeRespositoryImpl.save(paciente);
+	}
 	public String[] findAlergenosPaciente(String dni) {
 		String[] medico = pacienteRepositoryImpl.findAlergenos(dni);
 		return medico;
@@ -41,8 +58,12 @@ public class MedicoController {
 		return medico;
 	}
 
+	public ArrayList<byte[]> findInformeJaspersoft(String nombre) {
+		ArrayList<byte[]> medico = informeRespositoryImpl.verInformes(nombre);
+		return medico;
+	}
 	public ArrayList<String> findInforme(String nombre) {
-		ArrayList<String> medico = pacienteRepositoryImpl.findInforme(nombre);
+		ArrayList<String> medico = pacienteRepositoryImpl.findInformeHistorialMedico(nombre);
 		return medico;
 	}
 
@@ -149,7 +170,7 @@ public class MedicoController {
 		return actualizado;
 	}
 	public Boolean anadirInforme(Optional<Document> dni,  byte[] pdfBytes) {
-		Boolean actualizado = pacienteRepositoryImpl.guardarInforme(dni, pdfBytes);
+		Boolean actualizado = informeRespositoryImpl.guardarInforme(dni, pdfBytes);
 
 		return actualizado;
 	}

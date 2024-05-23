@@ -4,7 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import org.bson.Document;
@@ -34,7 +39,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JsonDataSource;
-
 
 public class GenerarInforme extends JFrame {
 
@@ -53,7 +57,7 @@ public class GenerarInforme extends JFrame {
 			especialidad, enfermedad, tipo, fechaIngreso, dniMedico;
 	String[] alergenos;
 	String[] medicamentos;
-	String filePath = "C:\\Users\\mamj2\\JaspersoftWorkspace\\MyReports\\Informe";
+	String filePath = "C:\\Users\\dmartinjimenez\\JaspersoftWorkspace\\MyReports\\InformePrueba";
 	String fileJRXML = filePath + ".jrxml";
 	HashMap<String, Object> parametros = new HashMap<>();
 	JasperReport informeEXE;
@@ -140,11 +144,10 @@ public class GenerarInforme extends JFrame {
 				tipo = controllerMedico.findTipo(selectedDni);
 				fechaIngreso = controllerMedico.findFechaIngreso(selectedDni);
 				dniMedico = controllerMedico.findDniMedico(selectedDni);
-				Optional<Document> medico = controllerMedico.findByDni(dniMedico);
 				nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico);
 				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico);
 				especialidad = controllerMedico.findEspecialidadPorDni(dniMedico);
-				
+
 				parametros.put("Dni", selectedDni);
 				parametros.put("Nombre", nombrePaciente);
 				parametros.put("Apellidos", apellidosPaciente);
@@ -164,9 +167,7 @@ public class GenerarInforme extends JFrame {
 
 					List<Document> documents = new ArrayList<>();
 					paciente.ifPresent(documents::add);
-					medico.ifPresent(documents::add);
-					
-					
+
 					ObjectMapper mapper = new ObjectMapper();
 					ArrayNode arrayNode = mapper.createArrayNode();
 
@@ -174,7 +175,6 @@ public class GenerarInforme extends JFrame {
 						ObjectNode objectNode = mapper.readValue(doc.toJson(), ObjectNode.class);
 						arrayNode.add(objectNode);
 					}
-					
 
 					String json = arrayNode.toString();
 
@@ -183,7 +183,7 @@ public class GenerarInforme extends JFrame {
 
 					JasperReport informeEXE = JasperCompileManager.compileReport(fileJRXML);
 					JasperPrint informeGenerado = JasperFillManager.fillReport(informeEXE, parametros, dataSource);
-
+					
 					JDialog progressDialog = new JDialog();
 					progressDialog.setTitle("Generando Informe");
 					progressDialog.setModal(true);
@@ -197,6 +197,15 @@ public class GenerarInforme extends JFrame {
 
 					JLabel progressLabel = new JLabel("Generando informe...");
 					progressDialog.add(progressLabel, BorderLayout.SOUTH);
+
+					Timer timer = new Timer(7000, new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							progressDialog.dispose();
+						}
+					});
+					timer.setRepeats(false); 
+					timer.start();
+
 					progressDialog.setVisible(true);
 
 					Thread.sleep(10);
@@ -204,6 +213,41 @@ public class GenerarInforme extends JFrame {
 					JasperExportManager.exportReportToPdfFile(informeGenerado, filepdf);
 					JOptionPane.showMessageDialog(null, "Informe generado con éxito", "Generación de Informe",
 							JOptionPane.INFORMATION_MESSAGE);
+
+					Optional<Document> pacienteDni = controllerMedico.comprobarDniPaciente(selectedDni);
+					if (pacienteDni.isPresent()) {
+						File pdfFile = new File(filepdf);
+						byte[] pdfData = new byte[(int) pdfFile.length()];
+						try (FileInputStream fis = new FileInputStream(pdfFile)) {
+							fis.read(pdfData);
+						}
+						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData);
+						if (guardado) {
+							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
+
+						} else {
+							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe no guardado correctamente");
+
+						}
+					} else {
+						Document informe = controllerMedico.anadirDniPaciente(selectedDni);
+						controllerMedico.salvarDniMedico(informe);
+						File pdfFile = new File(filepdf);
+
+						byte[] pdfData = new byte[(int) pdfFile.length()];
+						try (FileInputStream fis = new FileInputStream(pdfFile)) {
+							fis.read(pdfData);
+						}
+						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData);
+						if (guardado) {
+							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
+
+						} else {
+							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe no guardado correctamente");
+
+						}
+
+					}
 
 				} catch (Exception ex) {
 					ex.printStackTrace();
