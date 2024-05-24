@@ -31,14 +31,17 @@ public class MedicoController {
 
 		return informe;
 	}
+
 	public Optional<Document> comprobarDniPaciente(String dni) {
 
 		Optional<Document> informe = informeRespositoryImpl.findById(dni);
 		return informe;
 	}
+
 	public Boolean salvarDniMedico(Document paciente) {
 		return informeRespositoryImpl.save(paciente);
 	}
+
 	public String[] findAlergenosPaciente(String dni) {
 		String[] medico = pacienteRepositoryImpl.findAlergenos(dni);
 		return medico;
@@ -62,6 +65,7 @@ public class MedicoController {
 		ArrayList<byte[]> medico = informeRespositoryImpl.verInformes(nombre);
 		return medico;
 	}
+
 	public ArrayList<String> findInforme(String nombre) {
 		ArrayList<String> medico = pacienteRepositoryImpl.findInformeHistorialMedico(nombre);
 		return medico;
@@ -151,29 +155,34 @@ public class MedicoController {
 		String medico = pacienteRepositoryImpl.findEnfermedadIngreso(nombre);
 		return medico;
 	}
+
 	public String findTipo(String nombre) {
 		String medico = pacienteRepositoryImpl.findTipoEnfermedad(nombre);
 		return medico;
 	}
+
 	public String findFechaIngreso(String nombre) {
 		String medico = pacienteRepositoryImpl.findFechaIngreso(nombre);
 		return medico;
 	}
-	
+
 	public String findDniMedico(String nombre) {
 		String medico = pacienteRepositoryImpl.findDniMedico(nombre);
 		return medico;
 	}
+
 	public ArrayList<String> findHoraCreacion(String nombre) {
 		ArrayList<String> medico = informeRespositoryImpl.findFechaCreacion(nombre);
 		return medico;
 	}
+
 	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
 		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
 
 		return actualizado;
 	}
-	public Boolean anadirInforme(Optional<Document> dni,  byte[] pdfBytes, String hora) {
+
+	public Boolean anadirInforme(Optional<Document> dni, byte[] pdfBytes, String hora) {
 		Boolean actualizado = informeRespositoryImpl.guardarInforme(dni, pdfBytes, hora);
 
 		return actualizado;
@@ -185,8 +194,9 @@ public class MedicoController {
 		return actualizado;
 	}
 
-	public Boolean actualizarEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo, String fecha) {
-	    return pacienteRepositoryImpl.updateEnfermedadYTipo(paciente, enfermedad, tipo, fecha);
+	public Boolean actualizarEnfermedadYTipo(Optional<Document> paciente, String enfermedad, String tipo,
+			String fecha) {
+		return pacienteRepositoryImpl.updateEnfermedadYTipo(paciente, enfermedad, tipo, fecha);
 	}
 
 	public Boolean abrirCitasPaciente(Optional<Document> dni, List<String> citas) {
@@ -213,6 +223,11 @@ public class MedicoController {
 
 	public String[] medicamentos(String dni) {
 		String[] dniPacientes = pacienteRepositoryImpl.guardarMedicamentos(dni);
+		return dniPacientes;
+	}
+
+	public String[] informes(String dni) {
+		String[] dniPacientes = informeRespositoryImpl.guardaInformes(dni);
 		return dniPacientes;
 	}
 
@@ -243,6 +258,11 @@ public class MedicoController {
 
 	public Boolean eliminarMedicamentoTarjeta(Optional<Document> medicos, String valor) {
 		Boolean actualizado = pacienteRepositoryImpl.eliminarValorDeArray(medicos, "Tarjeta_Medica", valor);
+		return actualizado;
+	}
+
+	public Boolean eliminarInforme(String medicos, String valor) {
+		Boolean actualizado = informeRespositoryImpl.eliminarInformePaciente(medicos, valor);
 		return actualizado;
 	}
 

@@ -33,7 +33,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	JMenuItem mntmVerPacientesCargo, mntmAsignarCitasPacientes, mntmAbrirCitasMedicas, mntmVerCitasPacientes,
 			mntmAñadirMedicamentosPaciente, mntmEliminarMedicamentosPaciente, mntmVerHistorialMedico,
 			mntmEnfermedadTipo, mntmVerEnferemedadTipo, mntmVerInformacionPersonal, mntmCerrarSesion,
-			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme, mntmVerInforme;
+			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme, mntmVerInforme,mntmEliminarInforme;
 	VentanaVerInfoPersonal info;
 	InicioSesion inicio;
 	AsignarCitaPaciente asignar;
@@ -47,6 +47,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	ModificarEnfermedadTipo modificarEnfermedad;
 	GenerarInforme informe;
 	VerInformes informes;
+	EliminarInformePaciente eliminarInforme;
 
 	/**
 	 * Launch the application.
@@ -81,7 +82,7 @@ public class VentanaPrincipalMedico extends JFrame {
 
 		lblTitulo = new JLabel("Bienvenido usuario: " + dni);
 		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblTitulo.setBounds(39, 40, 243, 21);
+		lblTitulo.setBounds(87, 39, 243, 21);
 		contentPane.add(lblTitulo);
 
 		menuBar = new JMenuBar();
@@ -255,11 +256,22 @@ public class VentanaPrincipalMedico extends JFrame {
 		});
 		mntmVerInforme.setBorder(new LineBorder(new Color(0, 0, 0)));
 		mnGenerarInforme.add(mntmVerInforme);
+		
+		mntmEliminarInforme = new JMenuItem("Eliminar informe");
+		mntmEliminarInforme.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmEliminarInforme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				eliminarInforme = new EliminarInformePaciente(dni);
+				eliminarInforme.setVisible(true);
+				dispose();
+			}
+		});
+		mnGenerarInforme.add(mntmEliminarInforme);
 
 		menuBarInfoPersonalCerrarSesion = new JMenuBar();
 		menuBarInfoPersonalCerrarSesion.setBackground(new Color(230, 230, 250));
 		menuBarInfoPersonalCerrarSesion.setBorder(new LineBorder(new Color(0, 0, 0)));
-		menuBarInfoPersonalCerrarSesion.setBounds(447, 39, 87, 22);
+		menuBarInfoPersonalCerrarSesion.setBounds(499, 39, 87, 22);
 		contentPane.add(menuBarInfoPersonalCerrarSesion);
 
 		mnNewMenu = new JMenu("Perfil usuario");

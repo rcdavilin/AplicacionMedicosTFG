@@ -66,7 +66,7 @@ public class VerInformes extends JFrame {
         dniPaciente = controllerMedico.dniPacientes(dni);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 502, 389);
+        setBounds(100, 100, 523, 389);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(230, 230, 250));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -100,12 +100,12 @@ public class VerInformes extends JFrame {
                     for (int i = 0; i < informes.size() && i < horaCreacion.size(); i++) {
                         JLabel informeLabel = new JLabel("Informe " + (i + 1) + ": generado el " + horaCreacion.get(i));
                         informeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-                        informeLabel.setBounds(10, 10 + (i * 40), 320, 15);
+                        informeLabel.setBounds(8, 10 + (i * 40), 350, 15);
                         panelInformes.add(informeLabel);
 
                         JButton downloadButton = new JButton("Descargar " + (i + 1));
                         downloadButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-                        downloadButton.setBounds(350, 10 + (i * 40), 100, 15);
+                        downloadButton.setBounds(380, 10 + (i * 40), 100, 15);
                         int index = i;
                         downloadButton.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
@@ -134,7 +134,7 @@ public class VerInformes extends JFrame {
 
         scrollPane = new JScrollPane();
         scrollPane.setBackground(new Color(230, 230, 250));
-        scrollPane.setBounds(10, 100, 468, 201);
+        scrollPane.setBounds(10, 100, 487, 201);
         contentPane.add(scrollPane);
 
         panelInformes = new JPanel();

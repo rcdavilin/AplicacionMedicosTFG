@@ -5,6 +5,7 @@ import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -16,6 +17,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 
 import db.MongoDB;
@@ -137,5 +139,34 @@ public class InformeRepositoryImpl implements InformeRepository {
 	    return fechas;
 	}
 
+	@SuppressWarnings("unchecked")
+	public String[] guardaInformes(String paciente) {
+        Bson filter = eq("Dni_Paciente", paciente);
+        Document document = collection.find(filter).first();
+
+        List<Document> informes = (List<Document>) document.get("Informes");
+        List<String> informesStrings = informes.stream()
+                                               .map(doc -> doc.getString("Hora_Creacion"))
+                                               .collect(Collectors.toList());
+
+        return informesStrings.toArray(new String[0]);
+    }
+	
+	public Boolean eliminarInformePaciente(String paciente,  String valor) {
+		try {
+          
+            Document filter = new Document("Dni_Paciente", paciente);
+    
+            Document pullFilter = new Document("Hora_Creacion", valor);
+       
+            collection.updateOne(filter, Updates.pull("Informes", pullFilter));
+            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+  
 
 }
