@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,11 +32,14 @@ import javax.swing.border.EmptyBorder;
 
 import org.bson.Document;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import controller.MedicoController;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -135,37 +140,36 @@ public class GenerarInforme extends JFrame {
 					"¿Desea generar el informe al paciente con DNI " + selectedDni + "?", "Generar informe",
 					JOptionPane.YES_NO_OPTION);
 			if (option == JOptionPane.YES_OPTION) {
-				Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
-				alergenos = controllerMedico.findAlergenosPaciente(selectedDni);
-				medicamentos = controllerMedico.findMedicamentosPaciente(selectedDni);
-				nombrePaciente = controllerMedico.findNombrePacientePorDni(selectedDni);
-				apellidosPaciente = controllerMedico.findApellidosPacientePorDni(selectedDni);
-				fechaNaciemiento = controllerMedico.findFechaNacimientoPorDni(selectedDni);
-				sexo = controllerMedico.findSexoPorDni(selectedDni);
-				enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
-				tipo = controllerMedico.findTipo(selectedDni);
-				fechaIngreso = controllerMedico.findFechaIngreso(selectedDni);
-				dniMedico = controllerMedico.findDniMedico(selectedDni);
-				nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico);
-				apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico);
-				especialidad = controllerMedico.findEspecialidadPorDni(dniMedico);
-
-				parametros.put("Dni", selectedDni);
-				parametros.put("Nombre", nombrePaciente);
-				parametros.put("Apellidos", apellidosPaciente);
-				parametros.put("Fecha_Nacimiento", fechaNaciemiento);
-				parametros.put("Sexo", sexo);
-				parametros.put("Alergenos", String.join(", ", alergenos));
-				parametros.put("Medicamentos", String.join(", ", medicamentos));
-				parametros.put("Enfermedad", enfermedad);
-				parametros.put("Tipo", tipo);
-				parametros.put("Fecha_Ingreso", fechaIngreso);
-				parametros.put("Dni_Medico", dniMedico);
-				parametros.put("Nombre_Medico", nombreMedico);
-				parametros.put("Apellidos_Medico", apellidosMedico);
-				parametros.put("Especialidad_Medico", especialidad);
-
 				try {
+					Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
+					alergenos = controllerMedico.findAlergenosPaciente(selectedDni);
+					medicamentos = controllerMedico.findMedicamentosPaciente(selectedDni);
+					nombrePaciente = controllerMedico.findNombrePacientePorDni(selectedDni);
+					apellidosPaciente = controllerMedico.findApellidosPacientePorDni(selectedDni);
+					fechaNaciemiento = controllerMedico.findFechaNacimientoPorDni(selectedDni);
+					sexo = controllerMedico.findSexoPorDni(selectedDni);
+					enfermedad = controllerMedico.findEnfermedadIngreso(selectedDni);
+					tipo = controllerMedico.findTipo(selectedDni);
+					fechaIngreso = controllerMedico.findFechaIngreso(selectedDni);
+					dniMedico = controllerMedico.findDniMedico(selectedDni);
+					nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico);
+					apellidosMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico);
+					especialidad = controllerMedico.findEspecialidadPorDni(dniMedico);
+
+					parametros.put("Dni", selectedDni);
+					parametros.put("Nombre", nombrePaciente);
+					parametros.put("Apellidos", apellidosPaciente);
+					parametros.put("Fecha_Nacimiento", fechaNaciemiento);
+					parametros.put("Sexo", sexo);
+					parametros.put("Alergenos", String.join(", ", alergenos));
+					parametros.put("Medicamentos", String.join(", ", medicamentos));
+					parametros.put("Enfermedad", enfermedad);
+					parametros.put("Tipo", tipo);
+					parametros.put("Fecha_Ingreso", fechaIngreso);
+					parametros.put("Dni_Medico", dniMedico);
+					parametros.put("Nombre_Medico", nombreMedico);
+					parametros.put("Apellidos_Medico", apellidosMedico);
+					parametros.put("Especialidad_Medico", especialidad);
 
 					List<Document> documents = new ArrayList<>();
 					paciente.ifPresent(documents::add);
@@ -185,7 +189,7 @@ public class GenerarInforme extends JFrame {
 
 					JasperReport informeEXE = JasperCompileManager.compileReport(fileJRXML);
 					JasperPrint informeGenerado = JasperFillManager.fillReport(informeEXE, parametros, dataSource);
-					
+
 					JDialog progressDialog = new JDialog();
 					progressDialog.setTitle("Generando Informe");
 					progressDialog.setModal(true);
@@ -205,7 +209,7 @@ public class GenerarInforme extends JFrame {
 							progressDialog.dispose();
 						}
 					});
-					timer.setRepeats(false); 
+					timer.setRepeats(false);
 					timer.start();
 
 					progressDialog.setVisible(true);
@@ -222,9 +226,12 @@ public class GenerarInforme extends JFrame {
 						byte[] pdfData = new byte[(int) pdfFile.length()];
 						try (FileInputStream fis = new FileInputStream(pdfFile)) {
 							fis.read(pdfData);
+						} catch (IOException e1) {
+							e1.printStackTrace();
 						}
-						DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
-				        String fechaFormateada = LocalDateTime.now().format(formateador);
+						DateTimeFormatter formateador = DateTimeFormatter
+								.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
+						String fechaFormateada = LocalDateTime.now().format(formateador);
 						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData, fechaFormateada);
 						if (guardado) {
 							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
@@ -235,28 +242,63 @@ public class GenerarInforme extends JFrame {
 						}
 					} else {
 						Document informe = controllerMedico.anadirDniPaciente(selectedDni);
-						controllerMedico.salvarDniMedico(informe);
-						File pdfFile = new File(filepdf);
+						Boolean anadido = controllerMedico.salvarDniMedico(informe);
+						if (anadido) {
+							File pdfFile = new File(filepdf);
 
-						byte[] pdfData = new byte[(int) pdfFile.length()];
-						try (FileInputStream fis = new FileInputStream(pdfFile)) {
-							fis.read(pdfData);
-						}
-						DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
-				        String fechaFormateada = LocalDateTime.now().format(formateador);
-						Boolean guardado = controllerMedico.anadirInforme(pacienteDni, pdfData, fechaFormateada);
-						if (guardado) {
-							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
+							byte[] pdfData = new byte[(int) pdfFile.length()];
+							try (FileInputStream fis = new FileInputStream(pdfFile)) {
+								fis.read(pdfData);
+							} catch (FileNotFoundException e1) {
+
+								e1.printStackTrace();
+							} catch (IOException e1) {
+
+								e1.printStackTrace();
+							}
+							Optional<Document> pacienteDni1 = controllerMedico.comprobarDniPaciente(selectedDni);
+							if (pacienteDni1.isPresent()) {
+								DateTimeFormatter formateador = DateTimeFormatter
+										.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
+								String fechaFormateada = LocalDateTime.now().format(formateador);
+								Boolean guardado = controllerMedico.anadirInforme(pacienteDni1, pdfData, fechaFormateada);
+								if (guardado) {
+									JOptionPane.showMessageDialog(GenerarInforme.this, "Informe guardado correctamente");
+									
+								} else {
+									JOptionPane.showMessageDialog(GenerarInforme.this, "Informe no guardado correctamente");
+									
+								}
+
+							}else {
+								JOptionPane.showMessageDialog(GenerarInforme.this,
+										"No se ha encontrado el DNI del paciente correctamente");
+
+							}
 
 						} else {
-							JOptionPane.showMessageDialog(GenerarInforme.this, "Informe no guardado correctamente");
+							JOptionPane.showMessageDialog(GenerarInforme.this,
+									"No se ha encontrado el DNI del paciente correctamente");
 
 						}
 
 					}
 
-				} catch (Exception ex) {
-					ex.printStackTrace();
+				} catch (NullPointerException ex) {
+					JOptionPane.showMessageDialog(GenerarInforme.this,
+							"El paciente no tiene o un diagnostico hecho o alergenos, medicamentos en su historial");
+				} catch (JRException e2) {
+
+					e2.printStackTrace();
+				} catch (InterruptedException e2) {
+
+					e2.printStackTrace();
+				} catch (JsonMappingException e1) {
+
+					e1.printStackTrace();
+				} catch (JsonProcessingException e1) {
+
+					e1.printStackTrace();
 				}
 
 			}
