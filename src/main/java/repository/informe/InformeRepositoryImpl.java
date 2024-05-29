@@ -145,11 +145,11 @@ public class InformeRepositoryImpl implements InformeRepository {
         Document document = collection.find(filter).first();
 
         List<Document> informes = (List<Document>) document.get("Informes");
-        List<String> informesStrings = informes.stream()
+        List<String> informesListas = informes.stream()
                                                .map(doc -> doc.getString("Hora_Creacion"))
                                                .collect(Collectors.toList());
 
-        return informesStrings.toArray(new String[0]);
+        return informesListas.toArray(new String[0]);
     }
 	
 	public Boolean eliminarInformePaciente(String paciente,  String valor) {

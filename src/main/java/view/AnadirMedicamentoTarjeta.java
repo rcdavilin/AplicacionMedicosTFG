@@ -42,7 +42,7 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 	private int textFieldYPosition = 159; 
     private final int textFieldHeight = 26; 
     private final int textFieldSpacing = 10; 
-    private List<JTextField> textFields = new ArrayList<>(); // Lista para almacenar los JTextField
+    private List<JTextField> textFields = new ArrayList<>();
 
 	/**
 	 * Launch the application.

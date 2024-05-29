@@ -66,7 +66,7 @@ public class MedicoController {
 		return medico;
 	}
 
-	public ArrayList<String> findInforme(String nombre) {
+	public ArrayList<String> findInformeHistorialMedico(String nombre) {
 		ArrayList<String> medico = pacienteRepositoryImpl.findInformeHistorialMedico(nombre);
 		return medico;
 	}
@@ -279,15 +279,6 @@ public class MedicoController {
 		return medicoRepositoryImpl.update(medicos, atributo, contraseña);
 	}
 
-	public String mostrar(List<Document> medicos) {
-		String ensenar = medicoRepositoryImpl.mostrarMedicos(medicos);
-		return ensenar;
-	}
-
-	public String mostrar(Optional<Document> medicos) {
-		String ensenar = medicoRepositoryImpl.mostrar(medicos);
-		return ensenar;
-	}
 
 	public String mostrar(String mensaje) {
 		return mensaje;

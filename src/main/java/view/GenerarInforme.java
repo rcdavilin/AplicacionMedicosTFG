@@ -64,7 +64,7 @@ public class GenerarInforme extends JFrame {
 			especialidad, enfermedad, tipo, fechaIngreso, dniMedico;
 	String[] alergenos;
 	String[] medicamentos;
-	String filePath = "C:\\Users\\dmartinjimenez\\JaspersoftWorkspace\\MyReports\\InformePrueba";
+	String filePath = "C:\\Users\\mamj2\\JaspersoftWorkspace\\MyReports\\InformePrueba";
 	String fileJRXML = filePath + ".jrxml";
 	HashMap<String, Object> parametros = new HashMap<>();
 	JasperReport informeEXE;

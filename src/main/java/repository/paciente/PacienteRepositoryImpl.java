@@ -45,8 +45,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String[] findAlergenos(String medico) {
-		Bson filter = eq(dni, medico);
+	public String[] findAlergenos(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
 		List<String> alergenos = (List<String>) result.get("Alergenos");
 		return alergenos.toArray(new String[0]);
@@ -54,8 +54,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findEnfermedad(String medico) {
-		Bson filter = eq(dni, medico);
+	public ArrayList<String> findEnfermedad(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
 		ArrayList<Document> enfermedadesLista = (ArrayList<Document>) document.get("Enfermedades");
@@ -71,8 +71,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findFecha(String medico) {
-		Bson filter = eq(dni, medico);
+	public ArrayList<String> findFecha(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
 		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
@@ -88,8 +88,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findTratamiento(String medico) {
-		Bson filter = eq(dni, medico);
+	public ArrayList<String> findTratamiento(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
 		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
@@ -108,8 +108,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findInformeHistorialMedico(String medico) {
-		Bson filter = eq(dni, medico);
+	public ArrayList<String> findInformeHistorialMedico(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
 		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
@@ -128,8 +128,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<ArrayList<String>> findMedicamentosTratamiento(String medico) {
-		Bson filter = eq(dni, medico);
+	public ArrayList<ArrayList<String>> findMedicamentosTratamiento(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
 		if (document == null) {
@@ -157,8 +157,8 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String[] findMedicamentos(String medico) {
-		Bson filter = eq(dni, medico);
+	public String[] findMedicamentos(String paciente) {
+		Bson filter = eq(dni, paciente);
 		Document result = collection.find(filter).first();
 		List<String> medicamentos = (List<String>) result.get("Medicamentos");
 		return medicamentos.toArray(new String[0]);

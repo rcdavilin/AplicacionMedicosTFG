@@ -21,6 +21,8 @@ import javax.swing.text.MaskFormatter;
 import org.bson.Document;
 
 import controller.MedicoController;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class InicioSesion extends JFrame {
 
@@ -37,9 +39,10 @@ public class InicioSesion extends JFrame {
 	private MaskFormatter mascara;
 	MedicoController medicoController = new MedicoController();
 	VentanaPrincipalMedico vpm;
-	JRadioButton rdbtnMostrarContraseña, rdbtnCambioContraseña;
+	JRadioButton rdbtnMostrarContraseña;
 	CambioContraseña cambio;
 	String username;
+	JLabel cambiarContrasenaLabel;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -94,21 +97,6 @@ public class InicioSesion extends JFrame {
 			}
 		});
 
-		rdbtnCambioContraseña = new JRadioButton("Cambiar contraseña");
-		rdbtnCambioContraseña.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		rdbtnCambioContraseña.setBackground(new Color(230, 230, 250));
-		rdbtnCambioContraseña.setBounds(164, 190, 200, 21);
-		contentPane.add(rdbtnCambioContraseña);
-		rdbtnCambioContraseña.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (rdbtnCambioContraseña.isSelected()) {
-					cambio = new CambioContraseña();
-					cambio.setVisible(true);
-					dispose();
-				}
-			}
-		});
-
 		loginButton = new JButton("Iniciar Sesión");
 		loginButton.setBounds(292, 234, 150, 40);
 		loginButton.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -132,10 +120,26 @@ public class InicioSesion extends JFrame {
 			formattedDni = new JFormattedTextField(mascara);
 			formattedDni.setBounds(164, 100, 200, 27);
 			contentPane.add(formattedDni);
+			
+			
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		cambiarContrasenaLabel = new JLabel("Cambiar Contraseña");
+		cambiarContrasenaLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cambio = new CambioContraseña();
+				cambio.setVisible(true);
+				dispose();
+			}
+		});
+		cambiarContrasenaLabel.setBackground(new Color(230, 230, 250));
+		cambiarContrasenaLabel.setForeground(Color.BLUE);
+		cambiarContrasenaLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		cambiarContrasenaLabel.setBounds(164, 187, 200, 21);
+		contentPane.add(cambiarContrasenaLabel);
 
 		loginButton.addActionListener(new ActionListener() {
 			@Override
@@ -158,5 +162,4 @@ public class InicioSesion extends JFrame {
 		});
 
 	}
-
 }

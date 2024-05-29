@@ -82,7 +82,7 @@ public class VerEnfermedades extends JFrame {
         fecha = controllerMedico.findFecha(selectedDni);
         tratamiento = controllerMedico.findTratamiento(selectedDni);
         medicamentos = controllerMedico.findMedicamentosTratamiento(selectedDni);
-        informe = controllerMedico.findInforme(selectedDni);
+        informe = controllerMedico.findInformeHistorialMedico(selectedDni);
 
         lblEnfermedad = new JLabel("Enfermedad:");
         lblEnfermedad.setFont(new Font("Tahoma", Font.PLAIN, 12));

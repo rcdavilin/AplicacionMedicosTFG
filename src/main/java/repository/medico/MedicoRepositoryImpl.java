@@ -9,10 +9,6 @@ import java.util.Optional;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -50,50 +46,50 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 		return documentList;
 	}
 
-	public String findDniPorDni(String paciente) {
-		Bson filter = eq(dni, paciente);
+	public String findDniPorDni(String medico) {
+		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
 		Object dniList = result.get(dni);
 		return (String) dniList;
 
 	}
 
-	public String findNombrePordni(String paciente) {
-		Bson filter = eq(dni, paciente);
+	public String findNombrePordni(String medico) {
+		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
 		Object dniList = result.get(nombre);
 		return (String) dniList;
 
 	}
 
-	public String findApellidosPordni(String paciente) {
-		Bson filter = eq(dni, paciente);
+	public String findApellidosPordni(String medico) {
+		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
 		Object dniList = result.get(apellidos);
 		return (String) dniList;
 
 	}
 
-	public String findEspecialidadPordni(String paciente) {
-		Bson filter = eq(dni, paciente);
+	public String findEspecialidadPordni(String medico) {
+		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
 		Object dniList = result.get(especialidad);
 		return (String) dniList;
 
 	}
 
-	public String findFechaIncorporacionPordni(String paciente) {
-		Bson filter = eq(dni, paciente);
+	public String findFechaIncorporacionPordni(String medico) {
+		Bson filter = eq(dni, medico);
 		Document result = collection.find(filter).first();
 		Object dniList = result.get(fecha_incorporacion);
 		return (String) dniList;
 
 	}
 	
-	public Boolean abrirCitasMedicas(Optional<Document> paciente, String atributo, List<String> citas) {
+	public Boolean abrirCitasMedicas(Optional<Document> medico, String atributo, List<String> citas) {
 		try {
-			if (paciente.isPresent()) {
-				Document filter = paciente.get();
+			if (medico.isPresent()) {
+				Document filter = medico.get();
 				collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.pushEach(atributo, citas));
 				return true;
 			} else {
@@ -111,40 +107,6 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 		Document document = collection.find(filter).first();
 		List<String> dniList = (List<String>) document.get("Pacientes_Cargo");
 		return dniList.toArray(new String[0]);
-	}
-
-	public String pretty(String json) {
-		JsonElement je = JsonParser.parseString(json);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		return gson.toJson(je);
-	}
-
-	public String mostrarMedicos(List<Document> medicos) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String pretty = "";
-		if (medicos.isEmpty()) {
-
-		} else {
-			for (Document doc : medicos) {
-				String json = gson.toJson(doc);
-
-				pretty += pretty(json) + "\n";
-			}
-		}
-		return pretty;
-	}
-
-	public String mostrar(Optional<Document> medicos) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String pretty = "";
-		if (medicos.isEmpty()) {
-
-		} else {
-			Document doc1 = medicos.get();
-			String json = gson.toJson(doc1);
-			pretty += pretty(json) + "\n";
-		}
-		return pretty;
 	}
 
 	@Override
@@ -244,22 +206,7 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 		}
 	}
 
-//	public Boolean updatePacientesCargo(Optional<Document> medico, Document historial) {
-//		try {
-//
-//			if (medico.isPresent()) {
-//				Document filter = medico.get(); // filtro para seleccionar el documento a actualizar
-//				Document update = new Document("$set", new Document(historial));
-//				collection.updateOne(filter, update);
-//				return true;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
+
 
 	public List<Document> findByAttribute(String atributo, String valor) {
 		Bson filter = eq(atributo, valor);

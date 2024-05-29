@@ -230,12 +230,12 @@ public class AsignarEnfemerdadYTipo extends JFrame {
         textFieldFechaDiagnostico.setVisible(false);
         textFieldFechaDiagnostico.setEditable(false);
         textFieldFechaDiagnostico.setBounds(264, 227, 217, 19);
-        contentPane.add(textFieldFechaDiagnostico); // Añadir el componente al panel antes de establecer su texto
+        contentPane.add(textFieldFechaDiagnostico);
         textFieldFechaDiagnostico.setColumns(10);
 
         DateTimeFormatter formateador = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm");
         String fechaFormateada = LocalDateTime.now().format(formateador);
-        textFieldFechaDiagnostico.setText(fechaFormateada); // Establecer el texto después de haber añadido el componente al panel
+        textFieldFechaDiagnostico.setText(fechaFormateada);
 
     }
 }

@@ -103,16 +103,16 @@ public class VerInformes extends JFrame {
                         informeLabel.setBounds(8, 10 + (i * 40), 350, 15);
                         panelInformes.add(informeLabel);
 
-                        JButton downloadButton = new JButton("Descargar " + (i + 1));
-                        downloadButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
-                        downloadButton.setBounds(380, 10 + (i * 40), 100, 15);
+                        JButton botonDescargar = new JButton("Descargar " + (i + 1));
+                        botonDescargar.setFont(new Font("Tahoma", Font.PLAIN, 10));
+                        botonDescargar.setBounds(380, 10 + (i * 40), 100, 15);
                         int index = i;
-                        downloadButton.addActionListener(new ActionListener() {
+                        botonDescargar.addActionListener(new ActionListener() {
                             public void actionPerformed(ActionEvent e) {
-                                downloadInforme(index);
+                                descargarInforme(index);
                             }
                         });
-                        panelInformes.add(downloadButton);
+                        panelInformes.add(botonDescargar);
                     }
 
                     panelInformes.revalidate();
@@ -139,7 +139,7 @@ public class VerInformes extends JFrame {
 
         panelInformes = new JPanel();
         panelInformes.setBackground(new Color(230, 230, 250));
-        panelInformes.setLayout(null); // Set layout to null for absolute positioning
+        panelInformes.setLayout(null);
         scrollPane.setViewportView(panelInformes);
 
         btnCancelar = new JButton("Cancelar");
@@ -155,7 +155,7 @@ public class VerInformes extends JFrame {
         contentPane.add(btnCancelar);
     }
 
-    private void downloadInforme(int index) {
+    private void descargarInforme(int indice) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Guardar Informe");
         int userSelection = fileChooser.showSaveDialog(this);
@@ -164,13 +164,12 @@ public class VerInformes extends JFrame {
             File fileToSave = fileChooser.getSelectedFile();
             String filePath = fileToSave.getAbsolutePath();
 
-            // Add ".pdf" extension if not present
             if (!filePath.toLowerCase().endsWith(".pdf")) {
                 filePath += ".pdf";
             }
 
             try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                fos.write(informes.get(index));
+                fos.write(informes.get(indice));
                 JOptionPane.showMessageDialog(this, "Informe descargado con éxito.");
             } catch (IOException ex) {
                 ex.printStackTrace();
