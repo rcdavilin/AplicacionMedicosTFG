@@ -176,8 +176,8 @@ public class MedicoController {
 		return medico;
 	}
 
-	public Boolean addCitasPaciente(Optional<Document> dni, List<String> citas) {
-		Boolean actualizado = pacienteRepositoryImpl.updateCitasMedicos(dni, "Citas_Paciente", citas);
+	public Boolean addCitasPaciente(Optional<Document> dni, Document cita) {
+		Boolean actualizado = pacienteRepositoryImpl.updateCitas(dni, "Citas_Paciente", cita);
 
 		return actualizado;
 	}
@@ -211,8 +211,12 @@ public class MedicoController {
 		return paciente;
 	}
 
-	public String[] findbyCitasPaciente(String dni) {
-		String[] medico = pacienteRepositoryImpl.findCitasPacientes(dni);
+	public ArrayList<String> findbyCitasPaciente(String dni) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findCitasPacientes(dni);
+		return medico;
+	}
+	public ArrayList<String> findDniMedicobyCitasPaciente(String dni) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findDniMedicoDeCitasPacientes(dni);
 		return medico;
 	}
 
@@ -278,7 +282,6 @@ public class MedicoController {
 	public Boolean actualizarContraseña(Optional<Document> medicos, String atributo, String contraseña) {
 		return medicoRepositoryImpl.update(medicos, atributo, contraseña);
 	}
-
 
 	public String mostrar(String mensaje) {
 		return mensaje;

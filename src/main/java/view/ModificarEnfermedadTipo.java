@@ -205,7 +205,10 @@ public class ModificarEnfermedadTipo extends JFrame {
 							if (actualizado) {
 					            lblMensaje.setText("Paciente dado de alta");
 					            lblMensaje.setForeground(Color.GREEN);
-					        } else {
+					            textFieldEnfermedad.setText("");
+					            textFieldFechaIngreso.setText("");
+					            textFieldTipo.setText("");
+					      } else {
 					            lblMensaje.setText("Paciente no ha sido dado de alta");
 					            lblMensaje.setForeground(Color.RED);
 					        }

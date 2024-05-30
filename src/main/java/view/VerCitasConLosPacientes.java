@@ -5,8 +5,10 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +19,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import controller.MedicoController;
-import javax.swing.JButton;
 
 public class VerCitasConLosPacientes extends JFrame {
 
@@ -25,7 +26,7 @@ public class VerCitasConLosPacientes extends JFrame {
 	private JPanel contentPane;
 	static String dni;
 	String[] dniPaciente;
-	String[] citas;
+	ArrayList<String> citas, dniMedico;
 	String selectedDni;
 	MedicoController controllerMedico = new MedicoController();
 	JLabel lblVerCitasCon;
@@ -87,14 +88,19 @@ public class VerCitasConLosPacientes extends JFrame {
 				try {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 					citas = controllerMedico.findbyCitasPaciente(selectedDni);
-					
-					String todasLasCitas = "";
-					for (int i = 0; i < citas.length; i++) {
-						todasLasCitas += citas[i] + "\n";
+					dniMedico = controllerMedico.findDniMedicobyCitasPaciente(selectedDni);
+					String nombreMedico = "";
+					StringBuilder todasLasCitas = new StringBuilder();
+					for (int i = 0; i < citas.size(); i++) {
+						nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico.get(i));
+						todasLasCitas.append(citas.get(i)).append(" - ").append(nombreMedico).append("\n");
 					}
-					textAreaMostrar.setText(todasLasCitas);
+					textAreaMostrar.setText(todasLasCitas.toString());
 					
 				} catch (NullPointerException e1) {
+					JOptionPane.showMessageDialog(VerCitasConLosPacientes.this,
+							"El DNI " + selectedDni + " no tiene citas a cargo");
+				}catch (ClassCastException e2) {
 					JOptionPane.showMessageDialog(VerCitasConLosPacientes.this,
 							"El DNI " + selectedDni + " no tiene citas a cargo");
 				}

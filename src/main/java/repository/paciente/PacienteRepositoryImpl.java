@@ -308,11 +308,37 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String[] findCitasPacientes(String medico) {
+	public ArrayList<String> findCitasPacientes(String medico) {
 		Bson filter = eq(dni, medico);
-		Document result = collection.find(filter).first();
-		List<String> citas = (List<String>) result.get("Citas_Paciente");
-		return citas.toArray(new String[0]);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Citas_Paciente");
+		ArrayList<String> fecha = new ArrayList<>();
+
+		for (Document obj : enfermedades) {
+			if (obj.containsKey("Fecha")) {
+				fecha.add(obj.getString("Fecha"));
+			}
+		}
+
+		return fecha;
+
+	}
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findDniMedicoDeCitasPacientes(String medico) {
+		Bson filter = eq(dni, medico);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Citas_Paciente");
+		ArrayList<String> fecha = new ArrayList<>();
+
+		for (Document obj : enfermedades) {
+			if (obj.containsKey("DniMedico")) {
+				fecha.add(obj.getString("DniMedico"));
+			}
+		}
+
+		return fecha;
 
 	}
 
@@ -348,20 +374,20 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		}
 	}
 
-	public Boolean updateCitasMedicos(Optional<Document> paciente, String atributo, List<String> citas) {
-		try {
-			if (paciente.isPresent()) {
-				Document filter = paciente.get();
-				collection.updateOne(eq(dni, filter.getString("Dni")), Updates.pushEach(atributo, citas));
-				return true;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
+	public Boolean updateCitas(Optional<Document> paciente, String atributo, Document cita) {
+        try {
+            if (paciente.isPresent()) {
+                Document filter = paciente.get();
+                collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.push(atributo, cita));
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 	public Boolean updateMedicamentosTarjeta(Optional<Document> paciente, String atributo, List<String> valor) {
 		try {

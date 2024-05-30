@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -142,10 +141,11 @@ public class AsignarCitaPaciente extends JFrame {
 					if (paciente.isPresent()) {
 						String citas = textFieldFechaSeleccionada.getText() + " " + componenteHoras.getFormato();
 						;
-						ArrayList<String> listaCitas = new ArrayList<String>();
-						listaCitas.add(citas);
+						Document listaCitas = new Document();
+						
+						listaCitas.append("DniMedico", dni).append("Fecha", citas);
 
-						Boolean anadido = controllerMedico.addCitasPaciente(paciente, listaCitas);
+                        Boolean anadido = controllerMedico.addCitasPaciente(paciente, listaCitas);
 						if (anadido == true) {
 							lblMensaje.setText("Cita asignada al paceinte con exito");
 							lblMensaje.setForeground(Color.GREEN);
