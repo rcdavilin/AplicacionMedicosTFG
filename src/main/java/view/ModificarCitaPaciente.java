@@ -25,9 +25,7 @@ import javax.swing.border.EmptyBorder;
 import org.bson.Document;
 
 import com.toedter.calendar.JDateChooser;
-//import com.twilio.Twilio;
-//import com.twilio.rest.api.v2010.account.Message;
-//import com.twilio.type.PhoneNumber;
+
 
 import controller.MedicoController;
 import miComponente.ComponenteHoras;
@@ -55,12 +53,7 @@ public class ModificarCitaPaciente extends JFrame {
 	ComponenteHoras componenteHoras;
 	JLabel lblNewLabelCitaAntigua;
 	JComboBox<String> comboBoxCitasMedico;
-//	public static final String ACCOUNT_SID = System.getenv("AC09ca98a17a5047b99bb6c0ab94acaacf");
-//	public static final String AUTH_TOKEN = System.getenv("7ba87d27c69c87526fba82120da7eee0");
-//	String twilioPhone = "+14424652706";
-//	static {
-//		Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-//	}
+
 
 	/**
 	 * Launch the application.
@@ -165,32 +158,21 @@ public class ModificarCitaPaciente extends JFrame {
 					selectedDni = (String) comboBoxDniPacientes.getSelectedItem();
 					selectedCita = comboBoxCitasMedico.getSelectedItem().toString();
 					String citas = textFieldFechaSeleccionada.getText() + " " + componenteHoras.getFormato();
-//					String telefono = controllerMedico.findTelefono(selectedDni);
-					Boolean actualizado = controllerMedico.modificarCita(selectedDni, dni, selectedCita, citas);
+					try {
+						Boolean actualizado = controllerMedico.modificarCita(selectedDni, dni, selectedCita, citas);
 
-					if (actualizado == true) {
-						lblMensaje.setText("Cita modificada con exito");
-						lblMensaje.setForeground(Color.GREEN);
+						if (actualizado == true) {
+							lblMensaje.setText("Cita modificada con exito");
+							lblMensaje.setForeground(Color.GREEN);
 
-						try {
-//							String telefonoEspana = "+34" + telefono;
-//
-//							Message message = Message.creator(
-//	                                new PhoneNumber(telefonoEspana), 
-//	                                new PhoneNumber(twilioPhone), 
-//	                                "Estimado paciente, la hora de su cita ha sido modificada al día " + citas + ". Atentamente, Hospital XYZ."
-//	                        ).create();
-//							System.out.println("Mensaje enviado con SID: " + message.getSid());
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							lblMensaje.setText("Error al enviar SMS");
+						} else {
+							lblMensaje.setText("Cita no modificada con exito");
 							lblMensaje.setForeground(Color.RED);
 						}
-					} else {
-						lblMensaje.setText("Cita no modificada con exito");
-						lblMensaje.setForeground(Color.RED);
+					} catch (NullPointerException e1) {
+						JOptionPane.showMessageDialog(ModificarCitaPaciente.this,
+								"El DNI " + dni + " no citas abiertas");
 					}
-
 				}
 			});
 			btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
