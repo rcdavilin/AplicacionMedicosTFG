@@ -170,6 +170,10 @@ public class MedicoController {
 		String medico = pacienteRepositoryImpl.findDniMedico(nombre);
 		return medico;
 	}
+	public String findTelefono(String nombre) {
+		String medico = pacienteRepositoryImpl.findTelefono(nombre);
+		return medico;
+	}
 
 	public ArrayList<String> findHoraCreacion(String nombre) {
 		ArrayList<String> medico = informeRespositoryImpl.findFechaCreacion(nombre);
@@ -190,6 +194,11 @@ public class MedicoController {
 
 	public Boolean eliminarDiagnostico(Optional<Document> dni, String enfermedad, String tipo, String fecha) {
 		Boolean actualizado = pacienteRepositoryImpl.eliminarEnfermedadIngreso(dni, enfermedad, tipo, fecha);
+
+		return actualizado;
+	}
+	public Boolean modificarCita(String dni, String dniMedico, String fechaOriginal, String fechaNueva) {
+		Boolean actualizado = pacienteRepositoryImpl.modificarCita(dni, dniMedico, fechaOriginal, fechaNueva);
 
 		return actualizado;
 	}

@@ -1,18 +1,25 @@
 package repository.paciente;
 
 import static com.mongodb.client.model.Filters.eq;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+
 import db.MongoDB;
 
 public class PacienteRepositoryImpl implements PacienteRepository {
@@ -267,6 +274,14 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return (String) grupoSanguineoDni;
 
 	}
+	public String findTelefono(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document result = collection.find(filter).first();
+		Object grupoSanguineoDni = result.get("Telefono");
+		return (String) grupoSanguineoDni;
+
+	}
+
 	@Override
 	public Boolean save(Document entity) {
 		try {
@@ -324,6 +339,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return fecha;
 
 	}
+
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> findDniMedicoDeCitasPacientes(String medico) {
 		Bson filter = eq(dni, medico);
@@ -375,19 +391,19 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	public Boolean updateCitas(Optional<Document> paciente, String atributo, Document cita) {
-        try {
-            if (paciente.isPresent()) {
-                Document filter = paciente.get();
-                collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.push(atributo, cita));
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+		try {
+			if (paciente.isPresent()) {
+				Document filter = paciente.get();
+				collection.updateOne(eq("Dni", filter.getString("Dni")), Updates.push(atributo, cita));
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public Boolean updateMedicamentosTarjeta(Optional<Document> paciente, String atributo, List<String> valor) {
 		try {
@@ -453,7 +469,25 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		}
 	}
 
-	
+	public Boolean modificarCita(String dni, String dniMedico, String fechaOriginal, String nuevaFecha) {
+	    try {
+	        Document filter = new Document("Dni", dni).append("Citas_Paciente", new Document("$elemMatch",
+	                new Document("DniMedico", dniMedico).append("Fecha", fechaOriginal)));
+
+	        Document update = new Document("$set", new Document("Citas_Paciente.$[e].Fecha", nuevaFecha));
+
+	        Document arrayFilter = new Document("e.DniMedico", dniMedico).append("e.Fecha", fechaOriginal);
+
+	        UpdateOptions options = new UpdateOptions().arrayFilters(Arrays.asList(arrayFilter));
+
+	        UpdateResult result = collection.updateOne(filter, update, options);
+	        return result.getModifiedCount() > 0;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 	public Boolean update(Optional<Document> paciente, String atributo, Document valores) {
 		try {
 			if (paciente.isPresent()) {

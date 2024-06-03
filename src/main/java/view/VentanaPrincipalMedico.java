@@ -33,7 +33,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	JMenuItem mntmVerPacientesCargo, mntmAsignarCitasPacientes, mntmAbrirCitasMedicas, mntmVerCitasPacientes,
 			mntmAñadirMedicamentosPaciente, mntmEliminarMedicamentosPaciente, mntmVerHistorialMedico,
 			mntmEnfermedadTipo, mntmVerEnferemedadTipo, mntmVerInformacionPersonal, mntmCerrarSesion,
-			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme, mntmVerInforme,mntmEliminarInforme;
+			mntmModificarEnfermedadTipo, mntmVerMedicamentosPaciente, mntmGenerarInforme, mntmVerInforme,mntmEliminarInforme, mntmModificarCita;
 	VentanaVerInfoPersonal info;
 	InicioSesion inicio;
 	AsignarCitaPaciente asignar;
@@ -47,6 +47,7 @@ public class VentanaPrincipalMedico extends JFrame {
 	ModificarEnfermedadTipo modificarEnfermedad;
 	GenerarInforme informe;
 	VerInformes informes;
+	ModificarCitaPaciente modificarCita;
 	EliminarInformePaciente eliminarInforme;
 
 	/**
@@ -155,6 +156,17 @@ public class VentanaPrincipalMedico extends JFrame {
 			}
 		});
 		mnGestionCitas.add(mntmVerCitasPacientes);
+		
+		mntmModificarCita = new JMenuItem("Modificar cita");
+		mntmModificarCita.setBorder(new LineBorder(new Color(0, 0, 0)));
+		mntmModificarCita.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modificarCita = new ModificarCitaPaciente(dni);
+				modificarCita.setVisible(true);
+				dispose();
+			}
+		});
+		mnGestionCitas.add(mntmModificarCita);
 
 		mnGestionMedicamentos = new JMenu("Gestion medicamentos");
 		mnGestionMedicamentos.setBorder(new LineBorder(new Color(0, 0, 0)));

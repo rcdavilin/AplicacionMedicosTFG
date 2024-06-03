@@ -90,10 +90,12 @@ public class VerCitasConLosPacientes extends JFrame {
 					citas = controllerMedico.findbyCitasPaciente(selectedDni);
 					dniMedico = controllerMedico.findDniMedicobyCitasPaciente(selectedDni);
 					String nombreMedico = "";
+					String apellidoMedico = "";
 					StringBuilder todasLasCitas = new StringBuilder();
 					for (int i = 0; i < citas.size(); i++) {
 						nombreMedico = controllerMedico.findNombreMedicoPorDni(dniMedico.get(i));
-						todasLasCitas.append(citas.get(i)).append(" - ").append(nombreMedico).append("\n");
+						apellidoMedico = controllerMedico.findApellidosMedicoPorDni(dniMedico.get(i));
+						todasLasCitas.append(citas.get(i)).append(" - ").append(nombreMedico).append(" ").append(apellidoMedico).append("\n");
 					}
 					textAreaMostrar.setText(todasLasCitas.toString());
 					
@@ -111,11 +113,11 @@ public class VerCitasConLosPacientes extends JFrame {
 
 		lblNewLabel = new JLabel("Citas con los pacientes");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(31, 113, 157, 37);
+		lblNewLabel.setBounds(10, 113, 157, 37);
 		contentPane.add(lblNewLabel);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(194, 119, 274, 121);
+		scrollPane.setBounds(158, 119, 310, 121);
 		contentPane.add(scrollPane);
 
 		textAreaMostrar = new JTextArea();

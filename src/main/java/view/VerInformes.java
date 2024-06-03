@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -96,7 +97,7 @@ public class VerInformes extends JFrame {
                   
                     panelInformes.removeAll(); 
                     int totalHeight = 10 + informes.size() * 40; 
-                    panelInformes.setPreferredSize(new java.awt.Dimension(400, totalHeight)); 
+                    panelInformes.setPreferredSize(new Dimension(400, totalHeight)); 
                     for (int i = 0; i < informes.size() && i < horaCreacion.size(); i++) {
                         JLabel informeLabel = new JLabel("Informe " + (i + 1) + ": generado el " + horaCreacion.get(i));
                         informeLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
