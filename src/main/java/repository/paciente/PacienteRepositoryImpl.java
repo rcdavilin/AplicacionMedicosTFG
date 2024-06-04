@@ -51,6 +51,22 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		return documentList;
 	}
 
+	public Boolean updateHistorialMedico(Optional<Document> paciente, Document historial) {
+		try {
+			if (paciente.isPresent()) {
+				Document filter = paciente.get();
+				Document update = new Document("$push", new Document(historial));
+				collection.updateOne(filter, update);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public String[] findAlergenos(String paciente) {
 		Bson filter = eq(dni, paciente);
@@ -78,7 +94,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<String> findFecha(String paciente) {
+	public ArrayList<String> findFechaBaja(String paciente) {
 		Bson filter = eq(dni, paciente);
 		Document document = collection.find(filter).first();
 
@@ -86,14 +102,30 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 		ArrayList<String> fecha = new ArrayList<>();
 
 		for (Document obj : enfermedades) {
-			if (obj.containsKey("Fecha")) {
-				fecha.add(obj.getString("Fecha"));
+			if (obj.containsKey("Fecha_Baja")) {
+				fecha.add(obj.getString("Fecha_Baja"));
 			}
 		}
 
 		return fecha;
 	}
 
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> findFechaAlta(String paciente) {
+		Bson filter = eq(dni, paciente);
+		Document document = collection.find(filter).first();
+
+		ArrayList<Document> enfermedades = (ArrayList<Document>) document.get("Enfermedades");
+		ArrayList<String> fecha = new ArrayList<>();
+
+		for (Document obj : enfermedades) {
+			if (obj.containsKey("Fecha_Alta")) {
+				fecha.add(obj.getString("Fecha_Alta"));
+			}
+		}
+
+		return fecha;
+	}
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> findTratamiento(String paciente) {
 		Bson filter = eq(dni, paciente);

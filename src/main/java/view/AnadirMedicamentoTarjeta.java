@@ -39,10 +39,10 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 	private JButton btnAnadirCampo;
 	private JButton btnEliminarCampo;
 	private int textFieldXPosition = 384;
-	private int textFieldYPosition = 159; 
-    private final int textFieldHeight = 26; 
-    private final int textFieldSpacing = 10; 
-    private List<JTextField> textFields = new ArrayList<>();
+	private int textFieldYPosition = 159;
+	private final int textFieldHeight = 26;
+	private final int textFieldSpacing = 10;
+	private List<JTextField> textFields = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -120,7 +120,9 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 					if (paciente.isPresent()) {
 						List<String> medicamentosList = new ArrayList<>();
 						for (JTextField tf : textFields) {
-							medicamentosList.add(tf.getText());
+							if (!tf.getText().trim().isEmpty()) {
+			                    medicamentosList.add(tf.getText().trim());
+			                }
 						}
 						String[] listaMedicamentos = medicamentosList.toArray(new String[0]);
 						Boolean anadido = controllerMedico.anadirTarjeta(paciente, listaMedicamentos);
@@ -128,7 +130,8 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 							lblMensaje.setText("Medicamentos añadidos a la tarjeta medica del paciente con éxito");
 							lblMensaje.setForeground(Color.GREEN);
 						} else {
-							lblMensaje.setText("Medicamentos no han sido añadidos a la tarjeta medica del paciente con éxito");
+							lblMensaje.setText(
+									"Medicamentos no han sido añadidos a la tarjeta medica del paciente con éxito");
 							lblMensaje.setForeground(Color.RED);
 						}
 					} else {
@@ -155,25 +158,25 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 			lblElijaElDni.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			lblElijaElDni.setBounds(10, 86, 374, 25);
 			contentPane.add(lblElijaElDni);
-			
-			btnAnadirCampo = new JButton("Añadir campo");
+
+			btnAnadirCampo = new JButton("Nuevo medicamento");
 			btnAnadirCampo.setVisible(false);
 			btnAnadirCampo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					  anadirCampo();
+					anadirCampo();
 				}
 			});
-			btnAnadirCampo.setBounds(21, 216, 134, 21);
+			btnAnadirCampo.setBounds(21, 216, 198, 21);
 			contentPane.add(btnAnadirCampo);
 
-			btnEliminarCampo = new JButton("Eliminar campo");
+			btnEliminarCampo = new JButton("Eliminar ultimo medicamento");
 			btnEliminarCampo.setVisible(false);
 			btnEliminarCampo.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					  eliminarCampo();
+					eliminarCampo();
 				}
 			});
-			btnEliminarCampo.setBounds(21, 247, 134, 21);
+			btnEliminarCampo.setBounds(21, 247, 198, 21);
 			contentPane.add(btnEliminarCampo);
 
 		} catch (NullPointerException e) {
@@ -182,28 +185,28 @@ public class AnadirMedicamentoTarjeta extends JFrame {
 	}
 
 	private void anadirCampo() {
-        JTextField campoNuevo = new JTextField();
-        campoNuevo.setBounds(textFieldXPosition, textFieldYPosition, 222, textFieldHeight);
-        contentPane.add(campoNuevo);
-        textFields.add(campoNuevo); 
+		JTextField campoNuevo = new JTextField();
+		campoNuevo.setBounds(textFieldXPosition, textFieldYPosition, 222, textFieldHeight);
+		contentPane.add(campoNuevo);
+		textFields.add(campoNuevo);
 
-        textFieldYPosition += textFieldHeight + textFieldSpacing;
-        
-        contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
-        contentPane.revalidate();
-        contentPane.repaint();
-    }
+		textFieldYPosition += textFieldHeight + textFieldSpacing;
+
+		contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
+		contentPane.revalidate();
+		contentPane.repaint();
+	}
 
 	private void eliminarCampo() {
-        if (!textFields.isEmpty()) {
-            JTextField lastField = textFields.remove(textFields.size() - 1);
-            contentPane.remove(lastField);
+		if (!textFields.isEmpty()) {
+			JTextField lastField = textFields.remove(textFields.size() - 1);
+			contentPane.remove(lastField);
 
-            textFieldYPosition -= textFieldHeight + textFieldSpacing;
+			textFieldYPosition -= textFieldHeight + textFieldSpacing;
 
-            contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
-            contentPane.revalidate();
-            contentPane.repaint();
-        }
-    }
+			contentPane.setPreferredSize(new Dimension(400, textFieldYPosition + textFieldHeight));
+			contentPane.revalidate();
+			contentPane.repaint();
+		}
+	}
 }

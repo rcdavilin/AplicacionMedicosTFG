@@ -47,7 +47,7 @@ public class VerHistorialMedico extends JFrame {
 	JLabel lblEnfermedades;
 	JScrollPane scrollPaneEnfermedades;
 	JTextArea textAreaEnfermedades;
-	ArrayList<String> enfermedad, fecha;
+	ArrayList<String> enfermedad, fechaBaja, fechaAlta;
 	private JLabel lblVerHistorialMedico;
 
 	/**
@@ -90,12 +90,12 @@ public class VerHistorialMedico extends JFrame {
 
 			lblAlergenos = new JLabel("Alérgenos:");
 			lblAlergenos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblAlergenos.setBounds(95, 167, 85, 22);
+			lblAlergenos.setBounds(94, 145, 85, 22);
 			contentPane.add(lblAlergenos);
 
 			lblMedicamentos = new JLabel("Medicamentos actuales:");
 			lblMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblMedicamentos.setBounds(49, 255, 131, 22);
+			lblMedicamentos.setBounds(48, 253, 131, 22);
 			contentPane.add(lblMedicamentos);
 
 			comboBoxDniPacientes = new JComboBox<String>();
@@ -113,7 +113,8 @@ public class VerHistorialMedico extends JFrame {
 						alergenos = controllerMedico.findAlergenosPaciente(selectedDni);
 						medicamentos = controllerMedico.findMedicamentosPaciente(selectedDni);
 						enfermedad = controllerMedico.findEnfermedad(selectedDni);
-						fecha = controllerMedico.findFecha(selectedDni);
+						fechaBaja = controllerMedico.findFechaBaja(selectedDni);
+						fechaAlta = controllerMedico.findFechaAlta(selectedDni);
 
 						String todasLosAlergenos = "";
 						todasLosAlergenos = buscarDentroDeArray(todasLosAlergenos, alergenos);
@@ -122,7 +123,7 @@ public class VerHistorialMedico extends JFrame {
 
 						StringBuilder enfermedadesYFechas = new StringBuilder();
 						for (int i = 0; i < enfermedad.size(); i++) {
-							enfermedadesYFechas.append(enfermedad.get(i)).append(" - ").append(fecha.get(i)).append("\n");
+							enfermedadesYFechas.append(enfermedad.get(i)).append(" - ").append(fechaBaja.get(i)).append("\n");
 						}
 
 						textAreaAlergenos.setText(todasLosAlergenos);
@@ -161,7 +162,7 @@ public class VerHistorialMedico extends JFrame {
 			contentPane.add(btnVolver);
 
 			scrollPaneAlergenos = new JScrollPane();
-			scrollPaneAlergenos.setBounds(229, 147, 180, 70);
+			scrollPaneAlergenos.setBounds(228, 125, 180, 91);
 			contentPane.add(scrollPaneAlergenos);
 
 			textAreaAlergenos = new JTextArea();
@@ -169,7 +170,7 @@ public class VerHistorialMedico extends JFrame {
 			scrollPaneAlergenos.setViewportView(textAreaAlergenos);
 
 			scrollPaneMedicamentos = new JScrollPane();
-			scrollPaneMedicamentos.setBounds(229, 236, 180, 70);
+			scrollPaneMedicamentos.setBounds(228, 226, 180, 86);
 			contentPane.add(scrollPaneMedicamentos);
 
 			textAreaMedicamentos = new JTextArea();
@@ -197,13 +198,13 @@ public class VerHistorialMedico extends JFrame {
 			btnNewButton.setBounds(191, 433, 131, 30);
 			contentPane.add(btnNewButton);
 
-			lblEnfermedades = new JLabel("Enfermedades");
+			lblEnfermedades = new JLabel("Enfermedades:");
 			lblEnfermedades.setFont(new Font("Tahoma", Font.PLAIN, 12));
-			lblEnfermedades.setBounds(50, 349, 131, 22);
+			lblEnfermedades.setBounds(76, 348, 103, 22);
 			contentPane.add(lblEnfermedades);
 
 			scrollPaneEnfermedades = new JScrollPane();
-			scrollPaneEnfermedades.setBounds(229, 324, 180, 70);
+			scrollPaneEnfermedades.setBounds(228, 330, 180, 86);
 			contentPane.add(scrollPaneEnfermedades);
 
 			textAreaEnfermedades = new JTextArea();

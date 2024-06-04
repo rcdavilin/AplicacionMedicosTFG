@@ -25,6 +25,30 @@ public class MedicoController {
 
 	}
 
+	public Boolean anadirVariables(Optional<Document> pacientes, Document enfermedades) {
+		Document contenido = new Document();
+		contenido.append("Enfermedades", enfermedades);
+		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, contenido);
+	}
+
+	public Document crearDocumentoEnfermedades(Optional<Document> pacientes, String enfermedad, String fecha_baja, String fecha_alta,
+			String[] historialMedicoMedicamentos, String tratamiento, String informe) {
+		Document enfermedades = new Document();
+		Document detalles = new Document();
+
+		enfermedades.append("Enfermedad", enfermedad);
+		enfermedades.append("Fecha_Baja", fecha_baja);
+		enfermedades.append("Fecha_Alta", fecha_alta);
+
+		List<String> medicamentosList = Arrays.asList(historialMedicoMedicamentos);
+
+		detalles.append("Tratamiento", tratamiento);
+		detalles.append("Medicamentos", medicamentosList);
+		detalles.append("Informe", informe);
+		enfermedades.append("Detalles", detalles);
+		return enfermedades;
+	}
+
 	public Document anadirDniPaciente(String dni) {
 		Document informe;
 		informe = new Informe().append("Dni_Paciente", dni);
@@ -71,8 +95,12 @@ public class MedicoController {
 		return medico;
 	}
 
-	public ArrayList<String> findFecha(String nombre) {
-		ArrayList<String> medico = pacienteRepositoryImpl.findFecha(nombre);
+	public ArrayList<String> findFechaBaja(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findFechaBaja(nombre);
+		return medico;
+	}
+	public ArrayList<String> findFechaAlta(String nombre) {
+		ArrayList<String> medico = pacienteRepositoryImpl.findFechaAlta(nombre);
 		return medico;
 	}
 
@@ -170,6 +198,7 @@ public class MedicoController {
 		String medico = pacienteRepositoryImpl.findDniMedico(nombre);
 		return medico;
 	}
+
 	public String findTelefono(String nombre) {
 		String medico = pacienteRepositoryImpl.findTelefono(nombre);
 		return medico;
@@ -197,6 +226,7 @@ public class MedicoController {
 
 		return actualizado;
 	}
+
 	public Boolean modificarCita(String dni, String dniMedico, String fechaOriginal, String fechaNueva) {
 		Boolean actualizado = pacienteRepositoryImpl.modificarCita(dni, dniMedico, fechaOriginal, fechaNueva);
 
@@ -224,6 +254,7 @@ public class MedicoController {
 		ArrayList<String> medico = pacienteRepositoryImpl.findCitasPacientes(dni);
 		return medico;
 	}
+
 	public ArrayList<String> findDniMedicobyCitasPaciente(String dni) {
 		ArrayList<String> medico = pacienteRepositoryImpl.findDniMedicoDeCitasPacientes(dni);
 		return medico;

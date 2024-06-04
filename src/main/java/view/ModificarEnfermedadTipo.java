@@ -43,6 +43,7 @@ public class ModificarEnfermedadTipo extends JFrame {
 	private JTextField textFieldFechaIngreso;
 	private JButton btnVolver;
 	private JButton btnDarDeAlts;
+	AnadirEnfermedadAHistorial anadirHistorial;
 
 	/**
 	 * Launch the application.
@@ -198,20 +199,43 @@ public class ModificarEnfermedadTipo extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					int option = JOptionPane.showConfirmDialog(null, "¿Desea dar de alta al paciente?", "Confirmacion", JOptionPane.YES_NO_OPTION);
 					if(option == JOptionPane.YES_OPTION) {
-						selectedDni = comboBoxDniPacientes.getSelectedItem().toString();
-						Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
-						if(paciente.isPresent()) {
-							Boolean actualizado = controllerMedico.eliminarDiagnostico(paciente, "Enfermedad", "Tipo", "Fecha_Ingreso");
-							if (actualizado) {
-					            lblMensaje.setText("Paciente dado de alta");
-					            lblMensaje.setForeground(Color.GREEN);
-					            textFieldEnfermedad.setText("");
-					            textFieldFechaIngreso.setText("");
-					            textFieldTipo.setText("");
-					      } else {
-					            lblMensaje.setText("Paciente no ha sido dado de alta");
-					            lblMensaje.setForeground(Color.RED);
-					        }
+						int option1 = JOptionPane.showConfirmDialog(null, "¿Desea añadir la enfermedad al historial medico?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+						if(option1== JOptionPane.YES_OPTION) {
+							selectedDni = comboBoxDniPacientes.getSelectedItem().toString();
+							anadirHistorial = new AnadirEnfermedadAHistorial(dni, selectedDni);
+							anadirHistorial.setVisible(true);
+							dispose();
+							Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
+							if(paciente.isPresent()) {
+								Boolean actualizado = controllerMedico.eliminarDiagnostico(paciente, "Enfermedad", "Tipo", "Fecha_Ingreso");
+								if (actualizado) {
+									lblMensaje.setText("Paciente dado de alta");
+									lblMensaje.setForeground(Color.GREEN);
+									textFieldEnfermedad.setText("");
+									textFieldFechaIngreso.setText("");
+									textFieldTipo.setText("");
+								} else {
+									lblMensaje.setText("Paciente no ha sido dado de alta");
+									lblMensaje.setForeground(Color.RED);
+								}
+							}
+						}else {
+							
+							selectedDni = comboBoxDniPacientes.getSelectedItem().toString();
+							Optional<Document> paciente = controllerMedico.findByDniPaciente(selectedDni);
+							if(paciente.isPresent()) {
+								Boolean actualizado = controllerMedico.eliminarDiagnostico(paciente, "Enfermedad", "Tipo", "Fecha_Ingreso");
+								if (actualizado) {
+									lblMensaje.setText("Paciente dado de alta");
+									lblMensaje.setForeground(Color.GREEN);
+									textFieldEnfermedad.setText("");
+									textFieldFechaIngreso.setText("");
+									textFieldTipo.setText("");
+								} else {
+									lblMensaje.setText("Paciente no ha sido dado de alta");
+									lblMensaje.setForeground(Color.RED);
+								}
+							}
 						}
 					}else{
 						
