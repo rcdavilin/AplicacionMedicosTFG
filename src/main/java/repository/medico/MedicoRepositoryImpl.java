@@ -13,6 +13,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
@@ -128,13 +129,13 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 		return Optional.ofNullable(result);
 	}
 
-	public Optional<Document> findByContraseña(String contraseña) {
-
-		Bson filter = eq("Contraseña", contraseña);
+	public Optional<Document> findByUsernameAndPassword(String username, String password) {
+		Bson filter = Filters.and(Filters.eq("Dni", username), Filters.eq("Contraseña", password));
 		Bson projectionFields = Projections.excludeId();
 		Document result = collection.find(filter).projection(projectionFields).first();
 		return Optional.ofNullable(result);
 	}
+
 
 	public List<Document> findByNombre(String nombre) {
 

@@ -9,8 +9,11 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,7 +34,6 @@ public class VerInformes extends JFrame {
 	private JPanel contentPane;
 	static String dni;
 	String[] dniPaciente;
-	String selectedDni;
 	MedicoController controllerMedico = new MedicoController();
 	JLabel lblVerCitasCon;
 	JComboBox<String> comboBoxDniPacientes;
@@ -41,7 +43,8 @@ public class VerInformes extends JFrame {
 	private JButton btnCancelar;
 	VentanaPrincipalMedico principal;
 	ArrayList<byte[]> informes;
-	ArrayList<String> horaCreacion;
+	ArrayList<String> horaCreacion, fechaCreacion;
+	String selectedDni, nombrePaciente, apellidosPaciente, especialidad;
 
 	/**
 	 * Launch the application.
@@ -112,7 +115,7 @@ public class VerInformes extends JFrame {
 						int index = i;
 						botonDescargar.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
-								descargarInforme(index);
+								descargarInforme(index, dni);
 							}
 						});
 						panelInformes.add(botonDescargar);
@@ -158,26 +161,61 @@ public class VerInformes extends JFrame {
 		contentPane.add(btnCancelar);
 	}
 
-	private void descargarInforme(int indice) {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Guardar Informe");
-		int userSelection = fileChooser.showSaveDialog(this);
+	private void descargarInforme(int indice, String dni) {
+	    VerInformes.dni = dni;
+	    selectedDni = comboBoxDniPacientes.getSelectedItem().toString();
+	    nombrePaciente = controllerMedico.findNombrePacientePorDni(selectedDni);
+	    apellidosPaciente = controllerMedico.findApellidosPacientePorDni(selectedDni);
+	    especialidad = controllerMedico.findEspecialidadPorDni(dni);
+	    fechaCreacion = controllerMedico.findHoraCreacion(selectedDni);
 
-		if (userSelection == JFileChooser.APPROVE_OPTION) {
-			File fileToSave = fileChooser.getSelectedFile();
-			String filePath = fileToSave.getAbsolutePath();
+	    // Asegúrate de que el formato coincide con las fechas en horaCreacion
+	    DateTimeFormatter formatoOriginal = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM 'de' uuuu HH:mm", new Locale("es", "ES"));
+	    DateTimeFormatter nuevoFormato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-			if (!filePath.toLowerCase().endsWith(".pdf")) {
-				filePath += ".pdf";
-			}
+	    String fechaOficial = "";
+	    if (indice < horaCreacion.size()) {
+	        try {
+	            // Intenta parsear la fecha
+	            LocalDateTime fechaIngreso = LocalDateTime.parse(horaCreacion.get(indice), formatoOriginal);
+	            // Formatea la fecha al nuevo formato
+	            fechaOficial = fechaIngreso.format(nuevoFormato);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(this, "Error al parsear la fecha: " + horaCreacion.get(indice));
+	            return;
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Índice fuera de rango para horaCreacion.");
+	        return;
+	    }
 
-			try (FileOutputStream fos = new FileOutputStream(filePath)) {
-				fos.write(informes.get(indice));
-				JOptionPane.showMessageDialog(this, "Informe descargado con éxito.");
-			} catch (IOException ex) {
-				ex.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Error al descargar el informe.");
-			}
-		}
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setDialogTitle("Guardar Informe");
+
+	    // Usa el formato corregido para la fecha
+	    String defaultFileName = nombrePaciente + "_" + apellidosPaciente + "_" + especialidad + "_" + fechaOficial;
+	    fileChooser.setSelectedFile(new File(defaultFileName));
+
+	    int userSelection = fileChooser.showSaveDialog(this);
+
+	    if (userSelection == JFileChooser.APPROVE_OPTION) {
+	        File fileToSave = fileChooser.getSelectedFile();
+	        String filePath = fileToSave.getAbsolutePath();
+
+	        if (!filePath.toLowerCase().endsWith(".pdf")) {
+	            filePath += ".pdf";
+	        }
+
+	        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+	            fos.write(informes.get(indice));
+	            JOptionPane.showMessageDialog(this, "Informe descargado con éxito.");
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(this, "Error al descargar el informe.");
+	        }
+	    }
 	}
+
+
 }

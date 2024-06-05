@@ -149,14 +149,15 @@ public class InicioSesion extends JFrame {
 				String password = new String(passwordField.getPassword());
 
 				Optional<Document> dni = medicoController.comprobarDni(username);
-				Optional<Document> contraseña = medicoController.comprobarContraseña(password);
-				if (dni.isPresent() && contraseña.isPresent()) {
+				if (dni.isPresent() && medicoController.authenticateUser(username, password)) {
 					vpm = new VentanaPrincipalMedico(username);
 					vpm.setVisible(true);
 					dispose();
+				} else if (dni.isPresent()) {
+					JOptionPane.showMessageDialog(InicioSesion.this,
+							"El usuario " + username + " existe pero la contraseña es incorrecta");
 				} else {
-
-					JOptionPane.showMessageDialog(InicioSesion.this, "Usuario o contraseña incorrecto");
+					JOptionPane.showMessageDialog(InicioSesion.this, "El usuario " + username + " no existe");
 				}
 			}
 		});

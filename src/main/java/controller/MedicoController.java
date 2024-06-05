@@ -31,8 +31,8 @@ public class MedicoController {
 		return pacienteRepositoryImpl.updateHistorialMedico(pacientes, contenido);
 	}
 
-	public Document crearDocumentoEnfermedades(Optional<Document> pacientes, String enfermedad, String fecha_baja, String fecha_alta,
-			String[] historialMedicoMedicamentos, String tratamiento, String informe) {
+	public Document crearDocumentoEnfermedades(Optional<Document> pacientes, String enfermedad, String fecha_baja,
+			String fecha_alta, String[] historialMedicoMedicamentos, String tratamiento, String informe) {
 		Document enfermedades = new Document();
 		Document detalles = new Document();
 
@@ -99,6 +99,7 @@ public class MedicoController {
 		ArrayList<String> medico = pacienteRepositoryImpl.findFechaBaja(nombre);
 		return medico;
 	}
+
 	public ArrayList<String> findFechaAlta(String nombre) {
 		ArrayList<String> medico = pacienteRepositoryImpl.findFechaAlta(nombre);
 		return medico;
@@ -286,10 +287,9 @@ public class MedicoController {
 
 	}
 
-	public Optional<Document> comprobarContraseña(String contraseña) {
-		Optional<Document> medicos = medicoRepositoryImpl.findByContraseña(contraseña);
-		return medicos;
-
+	public Boolean authenticateUser(String username, String password) {
+		Optional<Document> user = medicoRepositoryImpl.findByUsernameAndPassword(username, password);
+		return user.isPresent();
 	}
 
 	public Boolean anadirTarjeta(Optional<Document> medicos, String[] valor) {
